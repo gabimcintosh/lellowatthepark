@@ -20,6 +20,7 @@ let unlocked = [];
 
 const output = document.getElementById("output");
 const input = document.getElementById("input");
+const button = document.getElementById("submit");
 
 function updateOutput() {
   output.innerText = "";
@@ -30,28 +31,36 @@ function updateOutput() {
   output.innerText += "Enter password:";
 }
 
+function processPassword(val) {
+  if (val === masterPassword) {
+    output.innerText = "== MASTER PASSWORD ACCEPTED ==\n\n";
+    programs.forEach((prog) => {
+      output.innerText += `${prog.id}: "${prog.pw}"\n`;
+    });
+  } else {
+    let matched = false;
+    programs.forEach((prog, i) => {
+      if (val === prog.pw) {
+        if (!unlocked.includes(i)) unlocked.push(i);
+        matched = true;
+      }
+    });
+    if (!matched) {
+      output.innerText += "\nInvalid password. Try again.\n";
+    }
+    updateOutput();
+  }
+}
+
+button.addEventListener("click", () => {
+  processPassword(input.value.trim());
+  input.value = "";
+});
+
 input.addEventListener("keydown", function(e) {
   if (e.key === "Enter") {
-    const val = input.value.trim();
+    processPassword(input.value.trim());
     input.value = "";
-    if (val === masterPassword) {
-      output.innerText = "== MASTER PASSWORD ACCEPTED ==\n\n";
-      programs.forEach((prog) => {
-        output.innerText += `${prog.id}: "${prog.pw}"\n`;
-      });
-    } else {
-      let matched = false;
-      programs.forEach((prog, i) => {
-        if (val === prog.pw) {
-          if (!unlocked.includes(i)) unlocked.push(i);
-          matched = true;
-        }
-      });
-      if (!matched) {
-        output.innerText += "\nInvalid password. Try again.\n";
-      }
-      updateOutput();
-    }
   }
 });
 

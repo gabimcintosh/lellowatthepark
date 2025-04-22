@@ -36,4 +36,16 @@ body {
   font-family: 'Courier New', Courier, monospace;
   padding: 5px;
   outline: none;
+  margin-bottom: 5px;
+}
+
+#submit {
+  width: 100%;
+  background-color: black;
+  color: #33ff33;
+  border: 2px solid #33ff33;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  padding: 5px;
+  cursor: pointer;
 }
