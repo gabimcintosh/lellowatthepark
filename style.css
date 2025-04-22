@@ -1,7 +1,12 @@
 
+:root {
+  --green: #33FF33;
+  --red: #ff3333;
+}
+
 body {
   background-color: black;
-  color: #33ff33;
+  color: var(--green);
   font-family: 'Courier New', Courier, monospace;
   margin: 0;
   padding: 20px;
@@ -19,7 +24,7 @@ body {
 }
 
 .program {
-  border: 1px solid #33ff33;
+  border: 1px solid var(--green);
   margin-bottom: 10px;
   padding: 10px;
 }
@@ -28,7 +33,7 @@ body {
   width: 100%;
   background-color: black;
   border: none;
-  color: #33ff33;
+  color: var(--green);
   font-size: 16px;
   text-align: left;
   padding: 5px;
@@ -36,8 +41,28 @@ body {
 }
 
 .riddle {
+  margin-top: 1rem;
+}
+
+.riddle .response,
+.riddle .description {
+  margin-top: .5rem;
+}
+
+.closed {
   display: none;
-  margin-top: 10px;
+}
+
+.open {
+  display: block;
+}
+
+.success {
+  color: var(--green);
+}
+
+.fail {
+  color: var(--red);
 }
 
 .shake {
@@ -55,8 +80,8 @@ body {
 input[type="text"] {
   width: 100%;
   background-color: black;
-  border: 1px solid #33ff33;
-  color: #33ff33;
+  border: 1px solid var(--green);
+  color: var(--green);
   padding: 5px;
   font-family: inherit;
   font-size: 16px;
