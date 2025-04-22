@@ -9,7 +9,7 @@ body {
   color: var(--green);
   font-family: 'Courier New', Courier, monospace;
   margin: 0;
-  padding: 20px;
+  padding: 2rem;
 }
 
 #terminal {
@@ -41,12 +41,14 @@ body {
 }
 
 .riddle {
-  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.riddle .response,
-.riddle .description {
-  margin-top: .5rem;
+.riddle .response:not(:empty),
+.riddle .description:not(:empty),
+p {
+  margin: .75rem .75rem;
 }
 
 .closed {
@@ -54,7 +56,7 @@ body {
 }
 
 .open {
-  display: block;
+  display: flex;
 }
 
 .success {
@@ -78,18 +80,18 @@ body {
 }
 
 input[type="text"] {
-  width: 100%;
   background-color: black;
   border: 1px solid var(--green);
   color: var(--green);
-  padding: 5px;
+  padding: .75rem;
   font-family: inherit;
   font-size: 16px;
+  margin: .5rem .75rem
 }
 
 @media (max-width: 600px) {
   body {
-    padding: 10px;
+    padding: 1rem;
   }
 
   .program button {
