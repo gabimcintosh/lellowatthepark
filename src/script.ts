@@ -1,10 +1,11 @@
 import { loadPrograms } from "./dataLoader";
 import { ProgramT } from "./types";
+import programsJson from "./programs.json";
+import { ToggleState, DomId, CssSelector, ClassListId } from "./enums";
 
-loadPrograms();
-
-const container = document.getElementById('programs') as HTMLDivElement;
-const programTmpl = document.querySelector('#program-tmpl') as HTMLTemplateElement;
+const programs: ProgramT[] = programsJson as ProgramT[];
+const container = document.getElementById(DomId.PROGRAMS) as HTMLDivElement;
+const programTmpl = document.getElementById(DomId.PROGRAM_TMPL) as HTMLTemplateElement;
 const options: ScrollIntoViewOptions = { behavior: 'smooth' };
 
 /**
@@ -15,14 +16,13 @@ const options: ScrollIntoViewOptions = { behavior: 'smooth' };
  * @param {number} nextProgramIndex Represents the number of the next program to render
  */
 const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex: number) => {
-  const input = riddle.querySelector('input') as HTMLInputElement;
-  const response = riddle.querySelector('.response') as HTMLDivElement;
-  const description = riddle.querySelector('.description') as HTMLDivElement;
-  const classicEnding = document.getElementById('classic-ending') as HTMLHeadingElement;
+  const input = riddle.querySelector(CssSelector.INPUT) as HTMLInputElement;
+  const response = riddle.querySelector(CssSelector.RESPONSE) as HTMLDivElement;
+  const description = riddle.querySelector(CssSelector.DESCRIPTION) as HTMLParagraphElement;
+  const classicEnding = document.getElementById(DomId.CLASSIC_ENDING) as HTMLHeadingElement;
 
   response.textContent = 'Access Granted.';
-  response.classList.remove('fail');
-  response.classList.add('success');
+  response.classList.remove(ClassListId.FAIL);
   description.textContent = program.description;
   input.value = `✔ ${input.value}`;
   input.disabled = true;
@@ -30,7 +30,7 @@ const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex
     renderProgram(nextProgramIndex);
   }
   else {
-    classicEnding.classList.remove('dn');
+    classicEnding.classList.remove(ClassListId.HIDE);
     description.scrollIntoView(options);
   }
 }
@@ -41,13 +41,12 @@ const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex
  * @param {HTMLDivElement} riddle The element containing the current riddle
  */
 const grantPunishment = (riddle: HTMLDivElement) => {
-  const response = riddle.querySelector('.response') as HTMLDivElement;
+  const response = riddle.querySelector(CssSelector.RESPONSE) as HTMLParagraphElement;
 
   response.textContent = 'Access Denied.';
-  response.classList.add('fail');
-  response.classList.remove('success');
-  riddle.classList.add('shake');
-  setTimeout(() => riddle.classList.remove('shake'), 400);
+  response.classList.add(ClassListId.FAIL);
+  riddle.classList.add(ClassListId.SHAKE);
+  setTimeout(() => riddle.classList.remove(ClassListId.SHAKE), 400);
 };
 
 /**
@@ -62,7 +61,7 @@ const gradeAnswer = (programIndex: number, e: KeyboardEvent) => {
     const program = programs[programIndex];
     const guess = input.value.trim();
     // Find the div containing the current riddle
-    const riddle = input.closest('.riddle') as HTMLDivElement;
+    const riddle = input.closest(CssSelector.RIDDLE) as HTMLDivElement;
     const decodedAnswer = atob(program.pw);
 
     if (guess === decodedAnswer) {
@@ -82,29 +81,28 @@ const renderProgram = (programIndex: number = 0) => {
   const programData = programs[programIndex];
   const programClone = programTmpl.content.cloneNode(true) as HTMLElement;
 
-  const riddleVisibilityToggleBtn = programClone.querySelector('button') as HTMLButtonElement;
-  const riddle = programClone.querySelector('.riddle') as HTMLDivElement;
-  const input = programClone.querySelector('input') as HTMLInputElement;
+  const riddleDetails = programClone.querySelector(CssSelector.DETAILS) as HTMLDetailsElement;
+  const riddleSummary = riddleDetails.querySelector(CssSelector.SUMMARY) as HTMLHeadingElement;
+  const input = riddleDetails.querySelector(CssSelector.INPUT) as HTMLInputElement;
+  const riddleP = riddleDetails.querySelector(CssSelector.CLUE) as HTMLParagraphElement;
 
-  riddleVisibilityToggleBtn.textContent = programData.id;
-  riddleVisibilityToggleBtn.addEventListener('click', () => {
-    riddle.classList.toggle('dn');
-    riddle.classList.toggle('open');
-    if (riddle.classList.contains('open')) {
+  riddleDetails.addEventListener('toggle', (e: Event) => {
+    const toggleEvent = e as ToggleEvent;
+    if (toggleEvent.newState === ToggleState.OPEN) {
       input.focus();
     }
   });
 
+  riddleSummary.textContent = programData.id;
+
   // Bind the keydown event listener with the program index for simpler lookup
   input.addEventListener('keydown', gradeAnswer.bind(null, programIndex));
-
-  const riddleP = programClone.querySelector('.riddle p') as HTMLParagraphElement;
 
   riddleP.textContent = programData.riddle;
 
   container.appendChild(programClone);
   // Smoothly scroll to the current riddle to solve
-  riddleVisibilityToggleBtn.scrollIntoView(options);
+  riddleDetails.scrollIntoView(options);
 };
 
 // Render the first program once the page has loaded
