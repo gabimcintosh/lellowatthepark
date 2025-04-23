@@ -15,6 +15,7 @@ const programs = [
 
 const container = document.getElementById('programs');
 const programTmpl = document.querySelector('#program-tmpl');
+const scrollOptions = { behavior: 'smooth' };
 
 /**
  * Update the UI to give feedback that the user's answer is correct
@@ -35,6 +36,10 @@ const grantReward = (riddle, program, nextProgramIndex) => {
   input.disabled = true;
   if (nextProgramIndex < programs.length) {
     renderProgram(nextProgramIndex);
+  }
+  else {
+    document.getElementById('classic-ending').classList.remove('dn');
+    description.scrollIntoView(scrollOptions);
   }
 }
 
@@ -91,7 +96,7 @@ const renderProgram = (programIndex) => {
 
   riddleVisibilityToggleBtn.textContent = programData.id;
   riddleVisibilityToggleBtn.addEventListener('click', () => {
-    riddle.classList.toggle('closed');
+    riddle.classList.toggle('dn');
     riddle.classList.toggle('open');
     if (riddle.classList.contains('open')) {
       input.focus();
@@ -105,7 +110,7 @@ const renderProgram = (programIndex) => {
 
   container.appendChild(programClone);
   // Smoothly scroll to the current riddle to solve
-  riddleVisibilityToggleBtn.scrollIntoView({ behavior: 'smooth' });
+  riddleVisibilityToggleBtn.scrollIntoView(scrollOptions);
 };
 
 // Render the first program once the page has loaded

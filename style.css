@@ -51,7 +51,7 @@ p {
   margin: .75rem .75rem;
 }
 
-.closed {
+.dn {
   display: none;
 }
 
@@ -65,6 +65,10 @@ p {
 
 .fail {
   color: var(--red);
+}
+
+#classic-ending {
+  text-align: center;
 }
 
 .shake {
