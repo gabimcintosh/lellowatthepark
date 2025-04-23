@@ -2,6 +2,7 @@
 :root {
   --green: #33FF33;
   --red: #ff3333;
+  --faded-green: #337200;
 }
 
 body {
@@ -91,6 +92,11 @@ input[type="text"] {
   font-family: inherit;
   font-size: 16px;
   margin: .5rem .75rem
+}
+
+input[type="text"]:disabled {
+  color: var(--faded-green);
+  border-color: var(--faded-green);
 }
 
 @media (max-width: 600px) {
