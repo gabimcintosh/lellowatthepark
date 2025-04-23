@@ -33,6 +33,7 @@ const grantReward = (riddle, program, nextProgramIndex) => {
   response.classList.remove('fail');
   response.classList.add('success');
   description.textContent = program.description;
+  input.value = `✔ ${input.value}`;
   input.disabled = true;
   if (nextProgramIndex < programs.length) {
     renderProgram(nextProgramIndex);
