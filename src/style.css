@@ -1,12 +1,12 @@
-
 :root {
+  --black: black;
   --green: #33FF33;
   --red: #ff3333;
   --faded-green: #337200;
 }
 
 body {
-  background-color: black;
+  background-color: var(--black);
   color: var(--green);
   font-family: 'Courier New', Courier, monospace;
   margin: 0;
@@ -30,15 +30,15 @@ body {
   padding: 10px;
 }
 
-.program button {
-  width: 100%;
-  background-color: black;
-  border: none;
+summary {
   color: var(--green);
   font-size: 16px;
-  text-align: left;
   padding: 5px;
   cursor: pointer;
+}
+
+summary::marker {
+  content: none;
 }
 
 .riddle {
@@ -46,22 +46,16 @@ body {
   flex-direction: column;
 }
 
-.riddle .response:not(:empty),
-.riddle .description:not(:empty),
+p:empty {
+  margin: 0;
+}
+
 p {
-  margin: .75rem .75rem;
+  margin: .75rem;
 }
 
 .dn {
   display: none;
-}
-
-.open {
-  display: flex;
-}
-
-.success {
-  color: var(--green);
 }
 
 .fail {
@@ -85,13 +79,13 @@ p {
 }
 
 input[type="text"] {
-  background-color: black;
+  background-color: var(--black);
   border: 1px solid var(--green);
   color: var(--green);
   padding: .75rem;
   font-family: inherit;
   font-size: 16px;
-  margin: .5rem .75rem
+  margin: .5rem .75rem;
 }
 
 input[type="text"]:disabled {
@@ -104,7 +98,7 @@ input[type="text"]:disabled {
     padding: 1rem;
   }
 
-  .program button {
+  .program summary {
     font-size: 14px;
   }
 
