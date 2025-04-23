@@ -127,6 +127,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.25.2.tgz#839f72c2decd378f86b8f525e1979a97b920c67d"
   integrity sha512-kM3HKb16VIXZyIeVrM1ygYmZBKybX8N4p754bw390wGO3Tf2j4L2/WYL+4suWujpgf6GBYs3jv7TyUivdd05JA==
 
+"@msgpack/msgpack@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-3.1.1.tgz#6f09ada4767a163f225cb7fc15bccbcef781fe4c"
+  integrity sha512-DnBpqkMOUGayNVKyTLlkM6ILmU/m/+VUxGkuQlPQVAcvreLz5jn1OlQnWd8uHKL/ZSiljpM12rjRhr51VtvJUQ==
+
 "@rollup/rollup-android-arm-eabi@4.40.0":
   version "4.40.0"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.40.0.tgz#d964ee8ce4d18acf9358f96adc408689b6e27fe3"
