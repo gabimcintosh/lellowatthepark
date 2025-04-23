@@ -1,7 +1,8 @@
+import { loadPrograms } from "./dataLoader";
 import { ProgramT } from "./types";
-import programsJson from "./programs.json";
 
-const programs: ProgramT[] = programsJson as ProgramT[];
+loadPrograms();
+
 const container = document.getElementById('programs') as HTMLDivElement;
 const programTmpl = document.querySelector('#program-tmpl') as HTMLTemplateElement;
 const options: ScrollIntoViewOptions = { behavior: 'smooth' };

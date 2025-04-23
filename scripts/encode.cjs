@@ -1,4 +1,4 @@
-const programsJson = require("./programs.json");
+const programsJson = require("./programsRaw.json");
 const { encode } = require("@msgpack/msgpack");
 const fs = require('node:fs');
 
@@ -9,10 +9,10 @@ console.log(base64Encoded);
 const buffer = encode(base64Encoded);
 
 let str = '';
-buffer.forEach((byte, index) => {
+buffer.forEach((byte) => {
     str += `${byte} `
 });
 str = str.trim();
 
-fs.writeFileSync('src/programs.bin', buffer, { encoding: 'binary' });
-fs.writeFileSync('src/programs.txt', str, { encoding: 'utf-8' });
+fs.writeFileSync('public/programs.bin', buffer, { encoding: 'binary' });
+fs.writeFileSync('public/programs.txt', str, { encoding: 'utf-8' });
