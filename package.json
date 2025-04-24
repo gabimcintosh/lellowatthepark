@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "yarn encode && vite",
+    "build": "yarn encode && tsc && vite build",
+    "preview": "vite preview",
+    "encode": "node scripts/encode.cjs"
   },
   "devDependencies": {
     "typescript": "~5.7.2",
