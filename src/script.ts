@@ -1,9 +1,8 @@
 import { loadPrograms } from "./dataLoader";
 import { ProgramT } from "./types";
-import programsJson from "./programs.json";
 import { ToggleState, DomId, CssSelector, ClassListId } from "./enums";
 
-const programs: ProgramT[] = programsJson as ProgramT[];
+const programs: ProgramT[] = await loadPrograms();
 const container = document.getElementById(DomId.PROGRAMS) as HTMLDivElement;
 const programTmpl = document.getElementById(DomId.PROGRAM_TMPL) as HTMLTemplateElement;
 const options: ScrollIntoViewOptions = { behavior: 'smooth' };
