@@ -3,4 +3,5 @@ export interface ProgramT {
     pw: string;
     riddle: string;
     description: string;
+    unlocked: boolean;
 }
