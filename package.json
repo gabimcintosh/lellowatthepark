@@ -10,8 +10,10 @@
     "encode": "node scripts/encode.cjs"
   },
   "devDependencies": {
+    "del": "^8.0.0",
     "gulp": "^5.0.0",
     "gulp-cli": "^3.0.0",
+    "gulp-json-minify": "^1.2.3",
     "ts-node": "^10.9.2",
     "typescript": "~5.7.2",
     "vite": "^6.3.1"
