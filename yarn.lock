@@ -497,6 +497,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gulp-json-validator@npm:^1":
+  version: 1.2.3
+  resolution: "@types/gulp-json-validator@npm:1.2.3"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/f67452d28b2ab642c3f0e94ea874e4c7435af068f8bd9efa79059c7d04781795b2db274523e393f1e238d46758d52cab313693b89d516d5abfe23d2ff38ccc51
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:*":
+  version: 22.15.2
+  resolution: "@types/node@npm:22.15.2"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10c0/39da31d5fc63b14fabd217bb8a921c4a7fc3d99f233440209f9fc2d5d736e8773f7efc65223e2fd0e8db8390b0baab9c0cd2e951c2ece8b237f07313ab3cf295
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:^3.0.0":
   version: 3.0.1
   resolution: "abbrev@npm:3.0.1"
@@ -526,6 +544,15 @@ __metadata:
   version: 7.1.3
   resolution: "agent-base@npm:7.1.3"
   checksum: 10c0/6192b580c5b1d8fb399b9c62bf8343d76654c2dd62afcb9a52b2cf44a8b6ace1e3b704d3fe3547d91555c857d3df02603341ff2cb961b9cfe2b12f9f3c38ee11
+  languageName: node
+  linkType: hard
+
+"ansi-colors@npm:^1.0.1":
+  version: 1.1.0
+  resolution: "ansi-colors@npm:1.1.0"
+  dependencies:
+    ansi-wrap: "npm:^0.1.0"
+  checksum: 10c0/c5f3ae4710ed564ca173cd2cf3e85a3bf8dabb7b20688f84299caaf0a4af01e6b7825b32739336c9437492058d3b07d90ef42e3e6223fbba3dc9d52f63e29056
   languageName: node
   linkType: hard
 
@@ -559,6 +586,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ansi-wrap@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "ansi-wrap@npm:0.1.0"
+  checksum: 10c0/1e0a53ae0d1a3fc5ceeb5d1868cb5b0a61543a1ff11f3efc51bab7923cc01fe8180db1f9250ce5003b425c53f568bcf3c2dea9d90b5c1cd0a1dae13f76c601dd
+  languageName: node
+  linkType: hard
+
 "anymatch@npm:^3.1.3, anymatch@npm:~3.1.2":
   version: 3.1.3
   resolution: "anymatch@npm:3.1.3"
@@ -576,6 +610,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"arr-diff@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "arr-diff@npm:4.0.0"
+  checksum: 10c0/67b80067137f70c89953b95f5c6279ad379c3ee39f7143578e13bd51580a40066ee2a55da066e22d498dce10f68c2d70056d7823f972fab99dfbf4c78d0bc0f7
+  languageName: node
+  linkType: hard
+
+"arr-union@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "arr-union@npm:3.1.0"
+  checksum: 10c0/7d5aa05894e54aa93c77c5726c1dd5d8e8d3afe4f77983c0aa8a14a8a5cbe8b18f0cf4ecaa4ac8c908ef5f744d2cbbdaa83fd6e96724d15fea56cfa7f5efdd51
+  languageName: node
+  linkType: hard
+
 "array-each@npm:^1.0.1":
   version: 1.0.1
   resolution: "array-each@npm:1.0.1"
@@ -587,6 +635,13 @@ __metadata:
   version: 1.1.0
   resolution: "array-slice@npm:1.1.0"
   checksum: 10c0/dfefd705905f428b6c4cace2a787f308b5a64db5411e33cdf8ff883b6643f1703e48ac152b74eea482f8f6765fdf78b5277e2bad7840be2b4d5c23777db3266f
+  languageName: node
+  linkType: hard
+
+"assign-symbols@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "assign-symbols@npm:1.0.0"
+  checksum: 10c0/29a654b8a6da6889a190d0d0efef4b1bfb5948fa06cbc245054aef05139f889f2f7c75b989917e3fde853fc4093b88048e4de8578a73a76f113d41bfd66e5775
   languageName: node
   linkType: hard
 
@@ -625,6 +680,13 @@ __metadata:
     async-settle: "npm:^2.0.0"
     now-and-later: "npm:^3.0.0"
   checksum: 10c0/f772a68ecf69dc82eae9b89a9a40d01e6a64f3d59d0ba2a76c6963207e98ab96232b5c83a1858af99384fd90247492a5085092ead4277a62fbcd7fe0785d112c
+  languageName: node
+  linkType: hard
+
+"backslash@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "backslash@npm:0.2.0"
+  checksum: 10c0/6c066b5eba28f9c56cceccae745544613c1bde57325ff76e161580941453ca225c68116b0d6f57442d6641180d5ae57f3212eb76226b1f98b535adc43e9d2f0e
   languageName: node
   linkType: hard
 
@@ -1039,6 +1101,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"extend-shallow@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "extend-shallow@npm:3.0.2"
+  dependencies:
+    assign-symbols: "npm:^1.0.0"
+    is-extendable: "npm:^1.0.1"
+  checksum: 10c0/f39581b8f98e3ad94995e33214fff725b0297cf09f2725b6f624551cfb71e0764accfd0af80becc0182af5014d2a57b31b85ec999f9eb8a6c45af81752feac9a
+  languageName: node
+  linkType: hard
+
 "extend@npm:^3.0.2":
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
@@ -1368,6 +1440,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gulp-json-validator@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "gulp-json-validator@npm:1.2.0"
+  dependencies:
+    json-dup-key-validator: "npm:^1.0.0"
+    map-stream: "npm:0.0.7"
+    plugin-error: "npm:^1.0.1"
+  checksum: 10c0/51d3e1bab3bf262782887409d44756c5212ef73fcce69ab6451ecf96eb63d9613efca92bedcf46a36e40f3f7685c8016cc29fb25aa53e0c714a66aeb650f169a
+  languageName: node
+  linkType: hard
+
 "gulp@npm:^5.0.0":
   version: 5.0.0
   resolution: "gulp@npm:5.0.0"
@@ -1532,6 +1615,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-extendable@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "is-extendable@npm:1.0.1"
+  dependencies:
+    is-plain-object: "npm:^2.0.4"
+  checksum: 10c0/1d6678a5be1563db6ecb121331c819c38059703f0179f52aa80c242c223ee9c6b66470286636c0e63d7163e4d905c0a7d82a096e0b5eaeabb51b9f8d0af0d73f
+  languageName: node
+  linkType: hard
+
 "is-extglob@npm:^2.1.1":
   version: 2.1.1
   resolution: "is-extglob@npm:2.1.1"
@@ -1580,6 +1672,15 @@ __metadata:
   version: 4.0.0
   resolution: "is-path-inside@npm:4.0.0"
   checksum: 10c0/51188d7e2b1d907a9a5f7c18d99a90b60870b951ed87cf97595d9aaa429d4c010652c3350bcbf31182e7f4b0eab9a1860b43e16729b13cb1a44baaa6cdb64c46
+  languageName: node
+  linkType: hard
+
+"is-plain-object@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "is-plain-object@npm:2.0.4"
+  dependencies:
+    isobject: "npm:^3.0.1"
+  checksum: 10c0/f050fdd5203d9c81e8c4df1b3ff461c4bc64e8b5ca383bcdde46131361d0a678e80bcf00b5257646f6c636197629644d53bd8e2375aea633de09a82d57e942f4
   languageName: node
   linkType: hard
 
@@ -1663,6 +1764,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-dup-key-validator@npm:^1.0.0":
+  version: 1.0.3
+  resolution: "json-dup-key-validator@npm:1.0.3"
+  dependencies:
+    backslash: "npm:^0.2.0"
+  checksum: 10c0/6aa8c3343e13ac6977764fe46a4e949dffa49c6b7f17c19fee855d6967a70f5a79ec91f9698e2a761540b51c12694ff373729c8c2fa2b52d064f41b09de81a25
+  languageName: node
+  linkType: hard
+
 "last-run@npm:^2.0.0":
   version: 2.0.0
   resolution: "last-run@npm:2.0.0"
@@ -1682,10 +1792,12 @@ __metadata:
   resolution: "lellowatthepark@workspace:."
   dependencies:
     "@msgpack/msgpack": "npm:^3.1.1"
+    "@types/gulp-json-validator": "npm:^1"
     del: "npm:^8.0.0"
     gulp: "npm:^5.0.0"
     gulp-cli: "npm:^3.0.0"
     gulp-json-minify: "npm:^1.2.3"
+    gulp-json-validator: "npm:^1.2.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:~5.7.2"
     vite: "npm:^6.3.1"
@@ -1744,6 +1856,13 @@ __metadata:
   version: 0.2.2
   resolution: "map-cache@npm:0.2.2"
   checksum: 10c0/05e3eb005c1b80b9f949ca007687640e8c5d0fc88dc45c3c3ab4902a3bec79d66a58f3e3b04d6985d90cd267c629c7b46c977e9c34433e8c11ecfcbb9f0fa290
+  languageName: node
+  linkType: hard
+
+"map-stream@npm:0.0.7":
+  version: 0.0.7
+  resolution: "map-stream@npm:0.0.7"
+  checksum: 10c0/77da244656dad5013bd147b0eef6f0343a212f14761332b97364fe348d4d70f0b8a0903457d6fc88772ec7c3d4d048b24f8db3aa5c0f77a8ce8bf2391473b8ec
   languageName: node
   linkType: hard
 
@@ -2069,6 +2188,18 @@ __metadata:
   version: 4.0.2
   resolution: "picomatch@npm:4.0.2"
   checksum: 10c0/7c51f3ad2bb42c776f49ebf964c644958158be30d0a510efd5a395e8d49cb5acfed5b82c0c5b365523ce18e6ab85013c9ebe574f60305892ec3fa8eee8304ccc
+  languageName: node
+  linkType: hard
+
+"plugin-error@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "plugin-error@npm:1.0.1"
+  dependencies:
+    ansi-colors: "npm:^1.0.1"
+    arr-diff: "npm:^4.0.0"
+    arr-union: "npm:^3.1.0"
+    extend-shallow: "npm:^3.0.2"
+  checksum: 10c0/9b0ef44f8d2749013dfeb4a86c8082f2f277bf72e0c694c30dd504d0b329f321db91fe9d9cb0f7e8579f7ffa4260b7792827bc5ef4f87d6bcc0fc691de3d91a1
   languageName: node
   linkType: hard
 
@@ -2693,6 +2824,13 @@ __metadata:
     last-run: "npm:^2.0.0"
     undertaker-registry: "npm:^2.0.0"
   checksum: 10c0/a3f4707de03affef7b93af7e1eb840a7af07ee2c9c25ce3a65930d8d0be08cf456e9f0c2998adc93b6c841e48c8df6c19f9f3ec99a31fd7245b0292059627c78
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~6.21.0":
+  version: 6.21.0
+  resolution: "undici-types@npm:6.21.0"
+  checksum: 10c0/c01ed51829b10aa72fc3ce64b747f8e74ae9b60eafa19a7b46ef624403508a54c526ffab06a14a26b3120d055e1104d7abe7c9017e83ced038ea5cf52f8d5e04
   languageName: node
   linkType: hard
 

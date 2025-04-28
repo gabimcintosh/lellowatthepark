@@ -1,6 +1,7 @@
 import { src, dest, series } from 'gulp';
 import { deleteAsync as del } from 'del';
 import jsonMinify from 'gulp-json-minify';
+import jsonValidator from 'gulp-json-validator';
 import { readFile, writeFile, unlink } from 'fs/promises';
 import { Buffer } from 'node:buffer';
 import { encode as msgPackEncode } from "@msgpack/msgpack";
@@ -12,6 +13,7 @@ const clean = async () => await del(destDir);
 
 const json = () =>
     src(`${srcDir}/*.json`)
+        .pipe(jsonValidator())
         .pipe(jsonMinify())
         .pipe(dest(destDir));
 
