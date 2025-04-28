@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "yarn encode && vite",
-    "build": "yarn encode && tsc && vite build",
-    "preview": "vite preview",
-    "encode": "node scripts/encode.cjs"
+    "dev": "yarn gulp && vite",
+    "build": "yarn gulp && tsc && vite build",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "del": "^8.0.0",
