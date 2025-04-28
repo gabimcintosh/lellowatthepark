@@ -1,13 +1,15 @@
 import { ProgramT } from "./types";
 import { encode, decode } from "@msgpack/msgpack";
 
+const PROGRAM_DATA_KEY = 'programs';
+
 /**
  * Load the programs from local storage or from a HTTP request
  * 
  * @returns {Promise<ProgramT[]>} A promise that resolves to an array of programs.
  */
 export const loadPrograms = async (): Promise<ProgramT[]> => {
-    const localStoragePrograms = window.localStorage.getItem('programs');
+    const localStoragePrograms = window.localStorage.getItem(PROGRAM_DATA_KEY);
     if (localStoragePrograms) {
         return decryptProgramData(localStoragePrograms);
     }
@@ -39,7 +41,7 @@ const encryptProgramData = (programs: ProgramT[]): string => {
  */
 export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
     const programData = encryptProgramData(programs);
-    window.localStorage.setItem('programs', programData);
+    window.localStorage.setItem(PROGRAM_DATA_KEY, programData);
 };
 
 /**
