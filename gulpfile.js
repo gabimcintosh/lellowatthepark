@@ -2,6 +2,7 @@ import { src, dest, series } from 'gulp';
 import { deleteAsync as del } from 'del';
 import jsonMinify from 'gulp-json-minify';
 import jsonValidator from 'gulp-json-validator';
+import jsonSchema from "gulp-json-schema";
 import { readFile, writeFile, unlink } from 'fs/promises';
 import { Buffer } from 'node:buffer';
 import { encode as msgPackEncode } from "@msgpack/msgpack";
@@ -15,6 +16,7 @@ const json = () =>
     src(`${srcDir}/*.json`)
         .pipe(jsonValidator())
         .pipe(jsonMinify())
+        .pipe(jsonSchema("schema.json"))
         .pipe(dest(destDir));
 
 const base64Encode = async () => {
