@@ -1,6 +1,11 @@
 import { ProgramT } from "./types";
 import { encode, decode } from "@msgpack/msgpack";
 
+/**
+ * Load the programs from local storage or from a HTTP request
+ * 
+ * @returns {Promise<ProgramT[]>} A promise that resolves to an array of programs.
+ */
 export const loadPrograms = async (): Promise<ProgramT[]> => {
     const localStoragePrograms = window.localStorage.getItem('programs');
     if (localStoragePrograms) {
@@ -12,29 +17,43 @@ export const loadPrograms = async (): Promise<ProgramT[]> => {
     return decryptProgramData(programsTxt);
 };
 
-const encryptProgramData = (programs: ProgramT[]) => {
+/**
+ * Encrypts an array of programs into a string format suitable for storage.
+ * 
+ * @param programs The programs to be encrypted
+ * @returns The encrypted string representation of the programs.
+ */
+const encryptProgramData = (programs: ProgramT[]): string => {
+    const base64Str = JSON.stringify(programs);
+    const base64Buff = Uint8Array.from(base64Str.split('').map(char => char.charCodeAt(0)));
+    const encodedArray = encode(base64Buff) as Uint8Array;
+    const encryptedData = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
 
+    return encryptedData;
 };
 
+/**
+ * Saves the given array of programs to local storage after encrypting them.
+ * 
+ * @param programs The programs to be saved
+ */
 export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
     const programData = encryptProgramData(programs);
     window.localStorage.setItem('programs', programData);
 };
 
+/**
+ * Decrypts a string representation of programs into an array of programs.
+ * 
+ * @param programsTxt The encrypted string representation of the programs
+ * @returns The decrypted array of programs.
+ */
 const decryptProgramData = (programsTxt: string): ProgramT[] => {
-    console.group('decrypt');
-    console.log('programsTxt', programsTxt);
     const arr = programsTxt.split(' ').map(char => Number.parseInt(char));
-    console.log('arr', arr);
     const uInt8Array = Uint8Array.from(arr);
-    console.log('uInt8Array', uInt8Array);
     const base64Buff = decode(uInt8Array) as Uint8Array;
-    console.log('base64Buff', base64Buff);
     const base64Str = String.fromCharCode(...base64Buff);
-    console.log('base64Str', base64Str);
     const programs = JSON.parse(base64Str);
-    console.log('programs', programs);
-    console.groupEnd()
 
     return programs;
 };
