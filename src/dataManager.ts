@@ -11,27 +11,12 @@ const PROGRAM_DATA_KEY = 'programs';
 export const loadPrograms = async (): Promise<ProgramT[]> => {
     const localStoragePrograms = window.localStorage.getItem(PROGRAM_DATA_KEY);
     if (localStoragePrograms) {
-        return decryptProgramData(localStoragePrograms);
+        return decodeStringToObject(localStoragePrograms);
     }
     const programsRsp = await fetch('./programs.txt');
     const programsTxt = await programsRsp.text();
 
-    return decryptProgramData(programsTxt);
-};
-
-/**
- * Encrypts an array of programs into a string format suitable for storage.
- * 
- * @param programs The programs to be encrypted
- * @returns The encrypted string representation of the programs.
- */
-const encryptProgramData = (programs: ProgramT[]): string => {
-    const base64Str = JSON.stringify(programs);
-    const base64Buff = Uint8Array.from(base64Str.split('').map(char => char.charCodeAt(0)));
-    const encodedArray = encode(base64Buff) as Uint8Array;
-    const encryptedData = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
-
-    return encryptedData;
+    return decodeStringToObject(programsTxt);
 };
 
 /**
@@ -40,22 +25,33 @@ const encryptProgramData = (programs: ProgramT[]): string => {
  * @param programs The programs to be saved
  */
 export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
-    const programData = encryptProgramData(programs);
+    const programData = encodeObjectToString(programs);
     window.localStorage.setItem(PROGRAM_DATA_KEY, programData);
 };
 
 /**
- * Decrypts a string representation of programs into an array of programs.
+ * Encodes a JavaScript object using MessagePack and converts the result to a string.
  * 
- * @param programsTxt The encrypted string representation of the programs
- * @returns The decrypted array of programs.
+ * @param programs The JavaScript object to encode
+ * @returns The encoded string representation of the object.
  */
-const decryptProgramData = (programsTxt: string): ProgramT[] => {
-    const arr = programsTxt.split(' ').map(char => Number.parseInt(char));
-    const uInt8Array = Uint8Array.from(arr);
-    const base64Buff = decode(uInt8Array) as Uint8Array;
-    const base64Str = String.fromCharCode(...base64Buff);
-    const programs = JSON.parse(base64Str);
+export const encodeObjectToString = (programs: ProgramT[]): string => {
+    const encodedArray = encode(programs) as Uint8Array;
+    const encodedString = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
 
-    return programs;
+    return encodedString;
+};
+
+/**
+ * Decodes a string representation of an object back into the original JavaScript object.
+ * 
+ * @param encodedString The encoded string representation of the object
+ * @returns The decoded JavaScript object.
+ */
+export const decodeStringToObject = (encodedString: string): ProgramT[] => {
+    const byteArray = encodedString.split(' ').map(byte => Number.parseInt(byte));
+    const uInt8Array = Uint8Array.from(byteArray);
+    const decodedObject = decode(uInt8Array) as ProgramT[];
+
+    return decodedObject;
 };
