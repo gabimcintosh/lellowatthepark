@@ -20,9 +20,9 @@ const clean = async () => await del(destDir);
  * @param {Object} file - The file object to process.
  * @param {Buffer} file.contents - The contents of the file as a Buffer.
  * @param {string} file.path - The file path.
- * @returns {Object} The modified file object with updated contents, path, and a `modified` flag.
+ * @returns {any} The modified file object with updated contents, path, and a `modified` flag.
  */
-const encodeObjectToString = (file) => {
+const encodeObjectToString = (file: any): any => () => {
     const programsStr = file.contents.toString();
     const programs = JSON.parse(programsStr);
     const encodedArray = msgPackEncode(programs);
@@ -46,7 +46,7 @@ const encodeObjectToString = (file) => {
  * const encodeStream = streamEncode();
  * readableStream.pipe(encodeStream).pipe(writableStream);
  */
-const streamEncode = () => {
+const streamEncode = (): Transform => {
     const transformStream = new Transform({
         objectMode: true,
         transform: function (file, _, callback) {
