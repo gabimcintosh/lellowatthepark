@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/gulp": "^4.0.17",
     "@types/gulp-json-validator": "^1",
     "del": "^8.0.0",
     "gulp": "^5.0.0",
