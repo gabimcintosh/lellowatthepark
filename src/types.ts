@@ -5,3 +5,8 @@ export interface ProgramT {
     description: string;
     unlocked: boolean;
 }
+
+export interface ProgramsT {
+    name: string;
+    riddles: ProgramT[];
+}
