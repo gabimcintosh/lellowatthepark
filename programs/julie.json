@@ -1,0 +1,19 @@
+{
+  "name": "Julie",
+  "riddles": [
+    {
+      "id": "Question #1",
+      "pw": "RmF0dGkgbWFzY2hp",
+      "riddle": "What phrase is said when we are frustrated?",
+      "description": "Ah yes, \"Strong deeds, gentle words.\" The perfect thing to say",
+      "unlocked": false
+    },
+    {
+      "id": "Question #2",
+      "pw": "RmF0dGkgbWFzY2hp",
+      "riddle": "What did Chelsea mistakenly misname for years in Nebraska until she was corrected in Utah?",
+      "description": "The poor dear...",
+      "unlocked": false
+    }
+  ]
+}
