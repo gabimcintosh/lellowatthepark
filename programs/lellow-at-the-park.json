@@ -1,5 +1,6 @@
 {
   "name": "Lellow at the Park",
+  "active": false,
   "riddles": [
     {
       "id": "Program 01",

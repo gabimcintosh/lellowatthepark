@@ -1,4 +1,4 @@
-export interface ProgramT {
+export interface RiddleT {
     id: string;
     pw: string;
     riddle: string;
@@ -6,7 +6,12 @@ export interface ProgramT {
     unlocked: boolean;
 }
 
-export interface ProgramsT {
+export interface ProgramT {
     name: string;
-    riddles: ProgramT[];
+    active: boolean;
+    riddles: RiddleT[];
 }
+
+export interface AppSaveDataT {
+    [jsonFileName: string]: ProgramT;
+};

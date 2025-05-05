@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "ProgramT": {
+    "RiddleT": {
       "properties": {
         "description": {
           "type": "string"
@@ -19,19 +19,24 @@
           "type": "boolean"
         }
       },
-      "type": "object"
+      "type": "object",
+      "additionalProperties": false
     }
   },
   "properties": {
     "name": {
       "type": "string"
     },
+    "active": {
+      "type": "boolean"
+    },
     "riddles": {
       "items": {
-        "$ref": "#/definitions/ProgramT"
+        "$ref": "#/definitions/RiddleT"
       },
       "type": "array"
     }
   },
-  "type": "object"
+  "type": "object",
+  "additionalProperties": false
 }

@@ -1,5 +1,6 @@
 {
   "name": "Julie",
+  "active": false,
   "riddles": [
     {
       "id": "Question #1",
