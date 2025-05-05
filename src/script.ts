@@ -9,7 +9,7 @@ const options: ScrollIntoViewOptions = { behavior: 'smooth' };
 
 /**
  * Update the UI to give feedback that the user's answer is correct
- * 
+ *
  * @param {HTMLDivElement} riddle The element containing the current riddle
  * @param {Object} program The data for the current riddle for updating
  * @param {number} nextProgramIndex Represents the number of the next program to render
@@ -38,49 +38,49 @@ const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex
 
 /**
  * Update the UI to give feedback that the user's answer is incorrect
- * 
+ *
  * @param {HTMLDivElement} riddle The element containing the current riddle
  */
 const grantPunishment = (riddle: HTMLDivElement) => {
-  const response = riddle.querySelector(CssSelector.RESPONSE) as HTMLParagraphElement;
+    const response = riddle.querySelector(CssSelector.RESPONSE) as HTMLParagraphElement;
 
-  response.textContent = 'Access Denied.';
-  response.classList.add(ClassListId.FAIL);
-  riddle.classList.add(ClassListId.SHAKE);
-  setTimeout(() => riddle.classList.remove(ClassListId.SHAKE), 400);
+    response.textContent = 'Access Denied.';
+    response.classList.add(ClassListId.FAIL);
+    riddle.classList.add(ClassListId.SHAKE);
+    setTimeout(() => riddle.classList.remove(ClassListId.SHAKE), 400);
 };
 
 /**
  * Verify if the user has answered the riddle correctly
- * 
+ *
  * @param {number} programIndex Represents number of the currently rendered program
  * @param {KeyboardEvent} e The keydown event which triggered the check to grade the answer
  */
 const gradeAnswer = (programIndex: number, e: KeyboardEvent) => {
-  if (e.key === 'Enter') {
-    const input = e.target as HTMLInputElement;
-    const program = programs[programIndex];
-    const guess = input.value.trim();
-    // Find the div containing the current riddle
-    const riddle = input.closest(CssSelector.RIDDLE) as HTMLDivElement;
-    const decodedAnswer = atob(program.pw);
+    if (e.key === 'Enter') {
+        const input = e.target as HTMLInputElement;
+        const program = programs[programIndex];
+        const guess = input.value.trim();
+        // Find the div containing the current riddle
+        const riddle = input.closest(CssSelector.RIDDLE) as HTMLDivElement;
+        const decodedAnswer = atob(program.pw);
 
-    if (guess === decodedAnswer) {
-      grantReward(riddle, program, programIndex + 1);
-    } else {
-      grantPunishment(riddle);
+        if (guess === decodedAnswer) {
+            grantReward(riddle, program, programIndex + 1);
+        } else {
+            grantPunishment(riddle);
+        }
     }
-  }
 };
 
 /**
  * Render a single program onto the page
- * 
+ *
  * @param {number} programIndex Which program to render of the list
  */
 const renderProgram = (programIndex: number = 0) => {
-  const programData = programs[programIndex];
-  const programClone = programTmpl.content.cloneNode(true) as HTMLElement;
+    const programData = programs[programIndex];
+    const programClone = programTmpl.content.cloneNode(true) as HTMLElement;
 
   const riddle = programClone.querySelector(CssSelector.RIDDLE) as HTMLDivElement;
   const riddleDetails = programClone.querySelector(CssSelector.DETAILS) as HTMLDetailsElement;
@@ -96,12 +96,12 @@ const renderProgram = (programIndex: number = 0) => {
     }
   });
 
-  riddleSummary.textContent = programData.id;
+    riddleSummary.textContent = programData.id;
 
-  // Bind the keydown event listener with the program index for simpler lookup
-  input.addEventListener('keydown', gradeAnswer.bind(null, programIndex));
+    // Bind the keydown event listener with the program index for simpler lookup
+    input.addEventListener('keydown', gradeAnswer.bind(null, programIndex));
 
-  riddleP.textContent = programData.riddle;
+    riddleP.textContent = programData.riddle;
 
   container.appendChild(programClone);
 
