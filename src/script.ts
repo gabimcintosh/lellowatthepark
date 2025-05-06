@@ -148,6 +148,9 @@ const init = () => {
             theEnd();
         }
     }
+    else {
+        // Render the selection screen
+    }
 }
 
 init();
