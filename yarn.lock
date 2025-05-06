@@ -203,6 +203,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpack/msgpack@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@msgpack/msgpack@npm:3.1.1"
+  checksum: 10c0/f7048d2145ee39e4979b4e6bb9d9723db031ea7b4f00d0ec96258fbff40b8af027783f391ee294e5385a5a91849a77d934ad08eb11d08253484eee8f8f0866ff
+  languageName: node
+  linkType: hard
+
 "@npmcli/agent@npm:^3.0.0":
   version: 3.0.0
   resolution: "@npmcli/agent@npm:3.0.0"
@@ -813,6 +820,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "lellowatthepark@workspace:."
   dependencies:
+    "@msgpack/msgpack": "npm:^3.1.1"
     typescript: "npm:~5.7.2"
     vite: "npm:^6.3.1"
   languageName: unknown

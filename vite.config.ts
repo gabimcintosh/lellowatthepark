@@ -5,5 +5,8 @@ export default {
     base: './',
     server: {
         open: '/index.html'
-    }
+    },
+    build: {
+      target: 'esnext',
+    },
 } satisfies UserConfig
