@@ -20,6 +20,7 @@
         }
       },
       "type": "object",
+      "required": ["id", "pw", "riddle", "description", "unlocked"],
       "additionalProperties": false
     }
   },
@@ -38,5 +39,6 @@
     }
   },
   "type": "object",
+  "required": ["name", "active", "riddles"],
   "additionalProperties": false
 }
