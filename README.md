@@ -6,7 +6,7 @@ Development for this project is a bit tricky at first, but it really is quite fu
 ### Install dependencies
 The project uses `yarn` as the package manager. Installing dependencies is as simple as:
 1. Installing `node` with `corepack` (should be packaged together with `node`)
-   1. See their [downloads page](https://nodejs.org/en/download)
+  1. See their [downloads page](https://nodejs.org/en/download)
 2. Enabling `corepack`
   ```
   corepack enable
