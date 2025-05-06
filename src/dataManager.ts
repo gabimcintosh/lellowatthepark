@@ -5,7 +5,7 @@ const PROGRAM_DATA_KEY = 'programs';
 
 /**
  * Load the programs from local storage or from a HTTP request
- * 
+ *
  * @returns {Promise<ProgramT[]>} A promise that resolves to an array of programs.
  */
 export const loadPrograms = async (): Promise<ProgramT[]> => {
@@ -21,7 +21,7 @@ export const loadPrograms = async (): Promise<ProgramT[]> => {
 
 /**
  * Saves the given array of programs to local storage after encrypting them.
- * 
+ *
  * @param programs The programs to be saved
  */
 export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
@@ -31,7 +31,7 @@ export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
 
 /**
  * Encodes a JavaScript object using MessagePack and converts the result to a string.
- * 
+ *
  * @param programs The JavaScript object to encode
  * @returns The encoded string representation of the object.
  */
@@ -44,7 +44,7 @@ export const encodeObjectToString = (programs: ProgramT[]): string => {
 
 /**
  * Decodes a string representation of an object back into the original JavaScript object.
- * 
+ *
  * @param encodedString The encoded string representation of the object
  * @returns The decoded JavaScript object.
  */
