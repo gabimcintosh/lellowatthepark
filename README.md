@@ -12,9 +12,9 @@ The project uses `yarn` as the package manager. Installing dependencies is as si
   corepack enable
   ```
 3. Installing dependencies
-   ```
-   yarn install
-   ```
+  ```
+  yarn install
+  ```
 
 ### Development
 Fire up the development server with `yarn dev`. This will run the build (which ensure the JSON data files necessary to load the app exist) and then launch the app via `vite`, which automatically opens an internet browser with the web app loaded. This uses hot module reloading, so as you make/save file changes, you will see them immediately reflected in the browser.
