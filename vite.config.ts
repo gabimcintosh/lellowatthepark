@@ -7,6 +7,6 @@ export default {
         open: '/index.html'
     },
     build: {
-      target: 'esnext',
+        target: 'esnext',
     },
-} satisfies UserConfig
+} satisfies UserConfig;

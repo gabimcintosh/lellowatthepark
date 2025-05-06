@@ -118,16 +118,13 @@ const renderProgram = (programIndex: number = 0) => {
  * Consecutively render all the programs which are unlocked plus the one which is currently ready to be solved
  */
 const renderPrograms = () => {
-    for (let programIndex = 0; programIndex < programs.length; programIndex++) {
-        const program = programs[programIndex];
-        if (program.unlocked) {
-            renderProgram(programIndex);
-        }
-        else {
-            renderProgram(programIndex);
-            break;
-        }
-    }
+    let program;
+    let programIndex = -1;
+    do {
+        // Move to the next programIndex and program
+        program = programs[++programIndex];
+        renderProgram(programIndex);
+    } while (program.unlocked && programIndex + 1 < programs.length);
 };
 
 /**
