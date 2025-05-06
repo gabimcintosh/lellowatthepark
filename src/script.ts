@@ -1,4 +1,4 @@
-import { loadPrograms } from "./dataLoader";
+import { loadPrograms, savePrograms } from "./dataManager";
 import { ProgramT } from "./types";
 import { ToggleState, DomId, CssSelector, ClassListId } from "./enums";
 
@@ -14,23 +14,25 @@ const options: ScrollIntoViewOptions = { behavior: 'smooth' };
  * @param {Object} program The data for the current riddle for updating
  * @param {number} nextProgramIndex Represents the number of the next program to render
  */
-const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex: number) => {
+const grantReward = (riddle: HTMLDivElement, program: ProgramT, nextProgramIndex: number | undefined) => {
     const input = riddle.querySelector(CssSelector.INPUT) as HTMLInputElement;
     const response = riddle.querySelector(CssSelector.RESPONSE) as HTMLDivElement;
     const description = riddle.querySelector(CssSelector.DESCRIPTION) as HTMLParagraphElement;
-    const classicEnding = document.getElementById(DomId.CLASSIC_ENDING) as HTMLHeadingElement;
 
     response.textContent = 'Access Granted.';
     response.classList.remove(ClassListId.FAIL);
     description.textContent = program.description;
-    input.value = `✔ ${input.value}`;
+    input.value = `✔ ${atob(program.pw)}`;
     input.disabled = true;
-    if (nextProgramIndex < programs.length) {
-        renderProgram(nextProgramIndex);
-    }
-    else {
-        classicEnding.classList.remove(ClassListId.HIDE);
-        description.scrollIntoView(options);
+    program.unlocked = true;
+    savePrograms(programs);
+    if (nextProgramIndex) {
+        if (nextProgramIndex < programs.length) {
+            renderProgram(nextProgramIndex);
+        }
+        else {
+            theEnd();
+        }
     }
 }
 
@@ -80,11 +82,13 @@ const renderProgram = (programIndex: number = 0) => {
     const programData = programs[programIndex];
     const programClone = programTmpl.content.cloneNode(true) as HTMLElement;
 
+    const riddle = programClone.querySelector(CssSelector.RIDDLE) as HTMLDivElement;
     const riddleDetails = programClone.querySelector(CssSelector.DETAILS) as HTMLDetailsElement;
     const riddleSummary = riddleDetails.querySelector(CssSelector.SUMMARY) as HTMLHeadingElement;
     const input = riddleDetails.querySelector(CssSelector.INPUT) as HTMLInputElement;
     const riddleP = riddleDetails.querySelector(CssSelector.CLUE) as HTMLParagraphElement;
 
+    riddleDetails.open = programData.unlocked;
     riddleDetails.addEventListener('toggle', (e: Event) => {
         const toggleEvent = e as ToggleEvent;
         if (toggleEvent.newState === ToggleState.OPEN) {
@@ -100,9 +104,44 @@ const renderProgram = (programIndex: number = 0) => {
     riddleP.textContent = programData.riddle;
 
     container.appendChild(programClone);
-    // Smoothly scroll to the current riddle to solve
-    riddleDetails.scrollIntoView(options);
+
+    if (programData.unlocked) {
+        grantReward(riddle, programData, undefined);
+    }
+    else {
+        // Smoothly scroll to the current riddle to solve
+        riddleDetails.scrollIntoView(options);
+    }
 };
 
-// Render the first program once the page has loaded
-renderProgram();
+/**
+ * Consecutively render all the programs which are unlocked plus the one which is currently ready to be solved
+ */
+const renderPrograms = () => {
+    for (let programIndex = 0; programIndex < programs.length; programIndex++) {
+        const program = programs[programIndex];
+        if (program.unlocked) {
+            renderProgram(programIndex);
+        }
+        else {
+            renderProgram(programIndex);
+            break;
+        }
+    }
+};
+
+/**
+ * Show the classic ending
+ */
+const theEnd = () => {
+    const classicEnding = document.getElementById(DomId.CLASSIC_ENDING) as HTMLHeadingElement;
+    classicEnding.classList.remove(ClassListId.HIDE);
+    classicEnding.scrollIntoView(options);
+}
+
+
+// Render the programs which are unlocked
+renderPrograms();
+if (programs[programs.length - 1].unlocked) {
+    theEnd();
+}
