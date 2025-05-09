@@ -3,10 +3,15 @@ import { ProgramT, RiddleT } from "./types";
 import { ToggleState, DomId, CssSelector, ClassListId } from "./enums";
 
 const programs: ProgramT[] = await loadPrograms();
-const loadedProgram: ProgramT = programs.find(program => program.active) as ProgramT;
-const title = document.querySelector('.title') as HTMLHeadingElement;
+let loadedProgram: ProgramT | undefined = programs.find(program => program.active) as ProgramT;
+const terminal = document.getElementById(DomId.TERMINAL) as HTMLDivElement;
+const title = document.getElementById(DomId.TERMINAL_TITLE) as HTMLHeadingElement;
 const container = document.getElementById(DomId.PROGRAMS) as HTMLDivElement;
 const programTmpl = document.getElementById(DomId.PROGRAM_TMPL) as HTMLTemplateElement;
+const programSelectionEl = document.getElementById(DomId.PROGRAM_SELECT) as HTMLDivElement;
+const classicEnding = document.getElementById(DomId.CLASSIC_ENDING) as HTMLHeadingElement;
+const programSelect = programSelectionEl.querySelector(CssSelector.SELECT) as HTMLSelectElement;
+
 const options: ScrollIntoViewOptions = { behavior: 'smooth' };
 
 /**
@@ -66,7 +71,7 @@ const gradeAnswer = (programRiddle: RiddleT, e: KeyboardEvent) => {
         // Find the div containing the current riddle
         const riddle = input.closest(CssSelector.RIDDLE) as HTMLDivElement;
         const decodedAnswer = atob(programRiddle.pw);
-        const programRiddleIndex = loadedProgram.riddles.findIndex(riddle => riddle.id === programRiddle.id);
+        const programRiddleIndex = loadedProgram?.riddles.findIndex(riddle => riddle.id === programRiddle.id) || 0;
 
         if (guess === decodedAnswer) {
             grantReward(riddle, programRiddle, programRiddleIndex + 1);
@@ -82,7 +87,6 @@ const gradeAnswer = (programRiddle: RiddleT, e: KeyboardEvent) => {
  * @param {RiddleT} programRiddle Which program to render of the list
  */
 const renderProgramRiddle = (programRiddle: RiddleT) => {
-    // const programData = programs[programIndex];
     const programClone = programTmpl.content.cloneNode(true) as HTMLElement;
 
     const riddle = programClone.querySelector(CssSelector.RIDDLE) as HTMLDivElement;
@@ -127,29 +131,78 @@ const renderProgramRiddles = (program: ProgramT) => {
         // Move to the next programIndex and program
         riddle = program.riddles[++riddleIndex];
         renderProgramRiddle(riddle);
-    } while (riddle.unlocked && riddleIndex + 1 < loadedProgram.riddles.length);
+    } while (riddle.unlocked && loadedProgram && riddleIndex + 1 < loadedProgram.riddles.length);
 };
+
+const resetProgramSelection = (e: Event) => {
+    const option = document.createElement('option');
+    option.selected = true;
+    option.value = 'Select your program';
+    option.disabled = true;
+    e.target?.removeEventListener('click', resetProgramSelection);
+    terminal.classList.add(ClassListId.HIDE);
+    programSelectionEl.classList.add(ClassListId.HIDE);
+    classicEnding.classList.add(ClassListId.HIDE);
+    container.replaceChildren();
+    programSelect.replaceChildren(option);
+    if (loadedProgram) {
+        loadedProgram.riddles.forEach(riddle => riddle.unlocked = false);
+        loadedProgram.active = false;
+    }
+    loadedProgram = undefined;
+    savePrograms(programs);
+    init();
+}
 
 /**
  * Show the classic ending
  */
 const theEnd = () => {
-    const classicEnding = document.getElementById(DomId.CLASSIC_ENDING) as HTMLHeadingElement;
+    const resetBtn = classicEnding.querySelector(CssSelector.BUTTON) as HTMLButtonElement;
+    resetBtn.addEventListener('click', resetProgramSelection);
     classicEnding.classList.remove(ClassListId.HIDE);
     classicEnding.scrollIntoView(options);
 }
 
+const programSelectChange = () => {
+    programSelect.removeEventListener('change', programSelectChange);
+    loadedProgram = programs.find(program => program.name === programSelect.value) as ProgramT;
+    loadedProgram.active = true;
+    savePrograms(programs);
+    programSelectionEl.classList.add(ClassListId.HIDE);
+    terminal.classList.remove(ClassListId.HIDE);
+    title.textContent = loadedProgram.name;
+    renderProgramRiddles(loadedProgram);
+}
+
+const renderSelectionScreen = () => {
+    programSelect.addEventListener('change', programSelectChange);
+    for (const program of programs) {
+        const option = document.createElement('option');
+        option.value = program.name;
+        option.textContent = program.name;
+        programSelect.appendChild(option);
+    }
+    programSelectionEl.classList.remove(ClassListId.HIDE);
+    programSelect.focus();
+}
+
+const renderProgram = (program: ProgramT) => {
+    terminal.classList.remove(ClassListId.HIDE);
+    title.textContent = program.name;
+    // Render the programs which are unlocked
+    renderProgramRiddles(program);
+    if (program.riddles[program.riddles.length - 1].unlocked) {
+        theEnd();
+    }
+}
+
 const init = () => {
     if (loadedProgram) {
-        title.textContent = loadedProgram.name;
-        // Render the programs which are unlocked
-        renderProgramRiddles(loadedProgram);
-        if (loadedProgram.riddles[loadedProgram.riddles.length - 1].unlocked) {
-            theEnd();
-        }
+        renderProgram(loadedProgram)
     }
     else {
-        // Render the selection screen
+        renderSelectionScreen();
     }
 }
 

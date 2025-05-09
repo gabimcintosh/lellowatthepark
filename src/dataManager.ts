@@ -53,5 +53,6 @@ export const decodeStringToObject = (encodedString: string): ProgramT[] => {
     const uInt8Array = Uint8Array.from(byteArray);
     const decodedObject = decode(uInt8Array) as ProgramT[];
 
+    console.log(decodedObject);
     return decodedObject;
 };
