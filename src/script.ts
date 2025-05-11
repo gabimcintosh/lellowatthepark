@@ -1,6 +1,7 @@
 import { loadPrograms, savePrograms } from "./dataManager";
 import { ProgramT, RiddleT } from "./types";
 import { ToggleState, DomId, CssSelector, ClassListId } from "./enums";
+import { fuzzy } from "fast-fuzzy";
 
 const programs: ProgramT[] = await loadPrograms();
 let loadedProgram: ProgramT | undefined = programs.find(program => program.active) as ProgramT;
@@ -73,7 +74,8 @@ const gradeAnswer = (programRiddle: RiddleT, e: KeyboardEvent) => {
         const decodedAnswer = atob(programRiddle.pw);
         const programRiddleIndex = loadedProgram?.riddles.findIndex(riddle => riddle.id === programRiddle.id) || 0;
 
-        if (guess === decodedAnswer) {
+        const scoreResult = fuzzy(guess, decodedAnswer);
+        if (scoreResult > 0.875) {
             grantReward(riddle, programRiddle, programRiddleIndex + 1);
         } else {
             grantPunishment(riddle);
