@@ -1,21 +1,44 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "array",
-  "items": {
-    "$ref": "#/definitions/ProgramT"
-  },
   "definitions": {
-    "ProgramT": {
-      "additionalProperties": false,
-      "type": "object",
+    "RiddleT": {
       "properties": {
-        "id": { "type": "string" },
-        "pw": { "type": "string" },
-        "riddle": { "type": "string" },
-        "description": { "type": "string" },
-        "unlocked": { "type": "boolean" }
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "pw": {
+          "type": "string"
+        },
+        "riddle": {
+          "type": "string"
+        },
+        "unlocked": {
+          "type": "boolean"
+        }
       },
-      "required": ["id", "pw", "riddle", "description", "unlocked"]
+      "type": "object",
+      "required": ["id", "pw", "riddle", "description", "unlocked"],
+      "additionalProperties": false
     }
-  }
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "riddles": {
+      "items": {
+        "$ref": "#/definitions/RiddleT"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "required": ["name", "active", "riddles"],
+  "additionalProperties": false
 }

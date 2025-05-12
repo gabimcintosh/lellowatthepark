@@ -2,13 +2,16 @@ import { src, dest, series } from 'gulp';
 import { deleteAsync as del } from 'del';
 import jsonMinify from 'gulp-json-minify';
 import jsonValidator from 'gulp-json-validator';
-import jsonSchema from "gulp-json-schema";
-import { Transform } from 'node:stream';
+import jsonSchema from 'gulp-json-schema';
 import { Buffer } from 'node:buffer';
-import { encode as msgPackEncode } from "@msgpack/msgpack";
+import { Transform } from 'node:stream';
+import { encode as msgPackEncode } from '@msgpack/msgpack';
 import PluginError from 'plugin-error';
 import Vinyl from 'vinyl';
 import notify from 'gulp-notify';
+import concat from 'gulp-json-concat';
+
+import type { AppSaveDataT, ProgramT } from './src/types';
 
 const srcDir = 'programs';
 const destDir = 'public';
@@ -77,11 +80,16 @@ function json() {
     return src(`${srcDir}/*.json`)
         .pipe(jsonValidator())
         .pipe(jsonMinify())
-        .pipe(jsonSchema("schema.json"))
+        .pipe(jsonSchema('schema.json'))
+        .pipe(concat('programs.json', (data: AppSaveDataT) => {
+            const programs: ProgramT[] = [];
+            Object.keys(data).forEach(jsonFileName => programs.push(data[jsonFileName]));
+            return Buffer.from(JSON.stringify(programs))
+        }))
         .pipe(msgPack())
         .on('error', notify.onError({
             title: '<%= error.plugin %>',
-            message: "Error: <%= error.message %>",
+            message: 'Error: <%= error.message %>',
         }))
         .pipe(dest(destDir));
 }
