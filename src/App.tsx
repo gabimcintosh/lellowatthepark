@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ProgramT } from './types';
 import { loadPrograms } from './dataManager';
+import ProgramSelector from './components/ProgramSelector';
+import Program from './components/Program';
 
 function App() {
   const [programs, setPrograms] = useState<ProgramT[]>([]);
+  const [program, setProgram] = useState<ProgramT | undefined>(undefined);
 
   useEffect(() => {
     const loadProgramData = async () => {
@@ -16,7 +19,11 @@ function App() {
 
   return (
     <div className="App">
-      {programs && JSON.stringify(programs)}
+      {program ? (
+        <Program program={program} />
+      ) : (
+        <ProgramSelector programs={programs} setProgram={setProgram} />
+      )}
     </div>
   );
 }
