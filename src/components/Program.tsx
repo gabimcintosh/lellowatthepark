@@ -1,16 +1,18 @@
 import React from "react";
 import { ProgramT } from "../types";
+import Riddle from "./Riddle";
 
 type ProgramProps = {
   program: ProgramT;
 };
 
 function Program({ program }: ProgramProps) {
+
   return (
-    <div className="program">
-      <h3>{program.name}</h3>
-      <p>{program.active}</p>
-    </div>
+    <>
+      <h1 className='title'>{program.name}</h1>
+      {program.riddles.map(riddle => <Riddle key={riddle.id} riddle={riddle} />)}
+    </>
   );
 }
 

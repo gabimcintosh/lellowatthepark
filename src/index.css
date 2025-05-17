@@ -37,7 +37,7 @@ select {
     text-align: center;
 }
 
-.container {
+.app {
     width: 100%;
     max-width: 800px;
     margin: auto;
