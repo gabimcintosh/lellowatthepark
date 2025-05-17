@@ -1,4 +1,5 @@
-import type { UserConfig } from 'vite'
+import type { UserConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
 export default {
     appType: 'spa',
@@ -9,4 +10,5 @@ export default {
     build: {
         target: 'esnext',
     },
+    plugins: [react()],
 } satisfies UserConfig;
