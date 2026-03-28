@@ -9,6 +9,7 @@ body {
     background-color: var(--black);
     color: var(--green);
     font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
     margin: 0;
     padding: 2rem;
 }
