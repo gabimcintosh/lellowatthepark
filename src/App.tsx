@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProgramT } from './types';
 import { loadPrograms } from './dataManager';
 import ProgramSelector from './components/ProgramSelector';
 import Program from './components/Program';
+import { ProgramDataContext } from './contexts/ProgramDataContext';
 
 function App() {
   const [programs, setPrograms] = useState<ProgramT[]>([]);
@@ -19,11 +20,9 @@ function App() {
 
   return (
     <div className="app">
-      {program ? (
-        <Program program={program} />
-      ) : (
-        <ProgramSelector programs={programs} setProgram={setProgram} />
-      )}
+      <ProgramDataContext.Provider value={{ programs, setPrograms, program, setProgram }}>
+        {program ? <Program program={program} /> : <ProgramSelector />}
+      </ProgramDataContext.Provider>
     </div>
   );
 }
