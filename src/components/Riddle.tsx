@@ -29,7 +29,7 @@ function Riddle({ riddle }: RiddleProps) {
       }
       setProgram({
         ...program,
-        riddles: program.riddles.map((r: RiddleT) => r.id === riddle.id ? { ...r, unlocked: true } : r)
+        riddles: program.riddles.map((r) => r.id === riddle.id ? { ...r, unlocked: true } : r)
       });
     }
     else {
