@@ -6,7 +6,12 @@ function ProgramSelector() {
   const { programs, setProgram } = useProgramData();
 
   function selectChangeHandler(event: ChangeEvent<HTMLSelectElement>) {
-    setProgram(programs.find((program: ProgramT) => program.name === event.target.value));
+    const program = programs.find((program: ProgramT) => program.name === event.target.value);
+    if (!program) {
+      return;
+    }
+
+    setProgram({ ...program, active: true });
   }
 
   return (

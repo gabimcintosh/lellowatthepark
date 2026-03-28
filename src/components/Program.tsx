@@ -7,7 +7,6 @@ type ProgramProps = {
 };
 
 function Program({ program }: ProgramProps) {
-
   return (
     <>
       <h1 className='title'>{program.name}</h1>
