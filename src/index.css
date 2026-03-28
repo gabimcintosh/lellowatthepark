@@ -13,6 +13,12 @@ body {
     padding: 2rem;
 }
 
+#app-root {
+    max-width: 800px;
+    margin: auto;
+    width: 100%;
+}
+
 #reset-selection {
     color: var(--green);
     background-color: var(--black);
@@ -35,12 +41,6 @@ select {
 
 #program-selector {
     text-align: center;
-}
-
-.app {
-    width: 100%;
-    max-width: 800px;
-    margin: auto;
 }
 
 .title {
