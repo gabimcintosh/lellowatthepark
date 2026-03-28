@@ -49,7 +49,7 @@ select {
     margin-bottom: 20px;
 }
 
-.program {
+.riddle {
     border: 1px solid var(--green);
     margin-bottom: 10px;
 }
@@ -65,7 +65,7 @@ summary::marker {
     content: none;
 }
 
-.riddle {
+.riddle form {
     display: flex;
     flex-direction: column;
 }
