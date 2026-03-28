@@ -13,7 +13,31 @@ body {
     padding: 2rem;
 }
 
-#terminal {
+#reset-selection {
+    color: var(--green);
+    background-color: var(--black);
+    border: 1px solid var(--green);
+    cursor: pointer;
+    padding: 1rem;
+    font-size: large;
+}
+
+select {
+    background-color: var(--black);
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: .75rem;
+    font-family: inherit;
+    font-size: 16px;
+    margin: .75rem 1rem;
+    padding: 1.5rem;
+}
+
+#program-selection {
+    text-align: center;
+}
+
+.container {
     width: 100%;
     max-width: 800px;
     margin: auto;

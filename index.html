@@ -9,10 +9,18 @@
   </head>
 
   <body>
-    <div id="terminal">
-      <h1 class="title">Lellow at the Park</h1>
+    <div id="program-selection" class="dn container">
+      <select id="program-select">
+        <option value="" selected disabled>Select your program</option>
+      </select>
+    </div>
+    <div id="terminal" class="dn container">
+      <h1 id="program-title" class="title"></h1>
       <div id="programs"></div>
-      <h3 id="classic-ending" class="dn">The End</h3>
+      <div id="classic-ending" class="dn">
+        <h2>The End</h2>
+        <button id="reset-selection">Play Again?</button>
+      </div>
     </div>
     <template id="program-tmpl">
       <div class="program">
