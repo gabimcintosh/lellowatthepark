@@ -8,12 +8,11 @@ const FUZZY_MATCH_THRESHOLD = 0.875;
 type UseRiddleGuessArgs = {
     riddle: RiddleT;
     decodedAnswer: string;
-    onSolve: () => void;
     shake: () => void;
     clearShake: () => void;
 };
 
-function useRiddleGuess({ riddle, decodedAnswer, onSolve, shake, clearShake }: UseRiddleGuessArgs) {
+function useRiddleGuess({ riddle, decodedAnswer, shake, clearShake }: UseRiddleGuessArgs) {
     const { activeProgram, updateActiveProgram } = useProgramData();
 
     const [guess, setGuess] = useState("");
@@ -43,7 +42,6 @@ function useRiddleGuess({ riddle, decodedAnswer, onSolve, shake, clearShake }: U
                 ),
             });
 
-            onSolve();
         } else {
             setResponse("Access Denied.");
             setIsCorrectGuess(false);

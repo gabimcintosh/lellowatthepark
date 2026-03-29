@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ProgramT } from "../types";
 import Riddle from "./Riddle";
 import useRiddleScroll from "../hooks/useRiddleScroll";
@@ -10,8 +10,13 @@ type ProgramProps = {
 };
 
 function Program({ program, resetProgram }: ProgramProps) {
-  const { riddlesToRender, nextRiddleIndex } = getRiddlesToRender(program.riddles);
-  const { riddleRefs, handleSolve } = useRiddleScroll(program.riddles, nextRiddleIndex);
+  const { riddlesToRender, nextRiddleIndex } = useMemo(
+    () => getRiddlesToRender(program.riddles),
+    [program.riddles]
+  );
+
+  useRiddleScroll(nextRiddleIndex);
+
   const isTheEnd = nextRiddleIndex === -1;
 
   return (
@@ -20,9 +25,8 @@ function Program({ program, resetProgram }: ProgramProps) {
       {riddlesToRender.map((riddle, index) =>
         <Riddle
           key={riddle.id}
+          id={`riddle-${index}`}
           riddle={riddle}
-          ref={(el) => { riddleRefs.current[index] = el; }}
-          onSolve={() => handleSolve(index)}
         />
       )}
       {isTheEnd &&

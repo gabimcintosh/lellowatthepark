@@ -1,29 +1,18 @@
-import { useRef, useState, useEffect } from "react";
-import { RiddleT } from "../types";
+import { useEffect } from "react";
 
 const options: ScrollIntoViewOptions = { behavior: "smooth" };
 
-function useRiddleScroll(riddles: RiddleT[], nextRiddleIndex: number) {
-    const riddleRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const [pendingScrollIndex, setPendingScrollIndex] = useState<number | null>(null);
-
+function useRiddleScroll(nextRiddleIndex: number) {
     useEffect(() => {
-        if (pendingScrollIndex === null) return;
-        riddleRefs.current[pendingScrollIndex]?.scrollIntoView(options);
-        setPendingScrollIndex(null);
-    }, [pendingScrollIndex, riddles]);
+        if (nextRiddleIndex === -1) return;
 
-    useEffect(() => {
-        if (nextRiddleIndex !== -1) {
-            riddleRefs.current[nextRiddleIndex]?.scrollIntoView(options);
+        const nextRiddleElement = document.getElementById(`riddle-${nextRiddleIndex}`);
+
+        if (nextRiddleElement) {
+            nextRiddleElement.scrollIntoView(options);
         }
-    }, []);
 
-    function handleSolve(index: number) {
-        setPendingScrollIndex(index + 1);
-    }
-
-    return { riddleRefs, handleSolve };
+    }, [nextRiddleIndex]);
 }
 
 export default useRiddleScroll;
