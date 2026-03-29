@@ -16,7 +16,9 @@ const Riddle = React.forwardRef<HTMLDivElement, RiddleProps>(
     const [response, setResponse] = React.useState("");
     const [isCorrectGuess, setIsCorrectGuess] = React.useState(true);
     const [isShaking, setIsShaking] = React.useState(false);
+    const decodedAnswer = atob(riddle.pw);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const inputVal = `${riddle.unlocked ? `✔ ${decodedAnswer}` : guess}`
 
     function changeHandler(event: ChangeEvent<HTMLInputElement>) {
       setGuess(event.target.value);
@@ -32,7 +34,6 @@ const Riddle = React.forwardRef<HTMLDivElement, RiddleProps>(
 
     function submitHandler(event: FormEvent<HTMLFormElement>) {
       event.preventDefault();
-      const decodedAnswer = atob(riddle.pw);
       const scoreResult = fuzzy(guess.trim(), decodedAnswer);
       if (scoreResult > 0.875) {
         setResponse("Access Granted.");
@@ -67,7 +68,14 @@ const Riddle = React.forwardRef<HTMLDivElement, RiddleProps>(
           <summary>{riddle.id}</summary>
           <form className={`${isShaking ? "shake" : ""}`} onSubmit={submitHandler}>
             <p className="description">{riddle.riddle}</p>
-            <input ref={inputRef} type="text" placeholder="Enter password..." value={`${riddle.unlocked ? '✔ ' + guess : guess}`} onChange={changeHandler} disabled={riddle.unlocked} />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder="Enter password..."
+              value={inputVal}
+              onChange={changeHandler}
+              disabled={riddle.unlocked}
+            />
             {response && <p className={`response ${!isCorrectGuess ? "fail" : ""}`}>{response}</p>}
             {riddle.unlocked && <p className="clue">{riddle.description}</p>}
           </form>
