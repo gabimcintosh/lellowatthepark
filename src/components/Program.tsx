@@ -2,7 +2,7 @@ import React from "react";
 import { ProgramT } from "../types";
 import Riddle from "./Riddle";
 import useRiddleScroll from "../hooks/useRiddleScroll";
-import getRiddlesToRender from "../hooks/getRiddlesToRender";
+import getRiddlesToRender from "../utils/getRiddlesToRender";
 
 type ProgramProps = {
   program: ProgramT;
