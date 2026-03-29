@@ -2,6 +2,8 @@ import React from "react";
 import { ProgramT } from "../types";
 import Riddle from "./Riddle";
 
+const options: ScrollIntoViewOptions = { behavior: 'smooth' };
+
 type ProgramProps = {
   program: ProgramT;
 };
@@ -32,9 +34,15 @@ function Program({ program }: ProgramProps) {
     }
 
     const target = riddleRefs.current[pendingScrollIndex];
-    target?.scrollIntoView({ behavior: "smooth" });
+    target?.scrollIntoView(options);
     setPendingScrollIndex(null);
   }, [pendingScrollIndex, program?.riddles]);
+
+  React.useEffect(() => {
+    if (nextRiddleIndex !== -1) {
+      riddleRefs.current[nextRiddleIndex]?.scrollIntoView(options);
+    }
+  }, []);
 
   return (
     <>
