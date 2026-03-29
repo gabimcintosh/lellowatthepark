@@ -57,7 +57,7 @@ function Program({ program, resetProgram }: ProgramProps) {
         />
       )}
       {nextRiddleIndex === -1 &&
-        <div id="classic-ending">
+        <div id="classic-ending" autoFocus>
           <h2>The End</h2>
           <button id="reset-selection" onClick={resetProgram}>Play Again?</button>
         </div>
