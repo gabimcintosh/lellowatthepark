@@ -12,7 +12,7 @@ type ProgramProps = {
 function Program({ program, resetProgram }: ProgramProps) {
   const { riddlesToRender, nextRiddleIndex } = getRiddlesToRender(program.riddles);
   const { riddleRefs, handleSolve } = useRiddleScroll(program.riddles, nextRiddleIndex);
-  const isComplete = nextRiddleIndex === -1;
+  const isTheEnd = nextRiddleIndex === -1;
 
   return (
     <>
@@ -25,7 +25,7 @@ function Program({ program, resetProgram }: ProgramProps) {
           onSolve={() => handleSolve(index)}
         />
       )}
-      {isComplete &&
+      {isTheEnd &&
         <div id="classic-ending">
           <h2>The End</h2>
           <button id="reset-selection" onClick={resetProgram}>Play Again?</button>
