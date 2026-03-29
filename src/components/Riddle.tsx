@@ -1,6 +1,5 @@
 import React from "react";
 import { RiddleT } from "../types";
-import { ToggleState } from "../enums";
 import useShake from "../hooks/useShake";
 import useRiddleGuess from "../hooks/useRiddleGuess";
 
@@ -23,7 +22,7 @@ function Riddle({ id, riddle }: RiddleProps) {
   const inputVal = riddle.unlocked ? `✔ ${decodedAnswer}` : guess;
 
   function toggleHandler(event: React.ToggleEvent<HTMLDetailsElement>) {
-    if (event.newState === ToggleState.OPEN) {
+    if (event.newState === "open") {
       inputRef.current?.focus();
     }
   }

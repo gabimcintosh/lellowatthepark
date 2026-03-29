@@ -1,4 +1,4 @@
-import { ProgramT } from "./types";
+import { ProgramT } from "../types";
 import { encode, decode } from "@msgpack/msgpack";
 
 const PROGRAM_DATA_KEY = 'programs';
