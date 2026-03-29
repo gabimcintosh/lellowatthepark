@@ -12,6 +12,7 @@ function Riddle({ riddle }: RiddleProps) {
   const [guess, setGuess] = React.useState("");
   const [response, setResponse] = React.useState("");
   const [isCorrectGuess, setIsCorrectGuess] = React.useState(true);
+  const [isShaking, setIsShaking] = React.useState(false);
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setGuess(event.target.value);
@@ -24,6 +25,7 @@ function Riddle({ riddle }: RiddleProps) {
     if (scoreResult > 0.875) {
       setResponse("Access Granted.");
       setIsCorrectGuess(true);
+      setIsShaking(false);
       if (!program) {
         return;
       }
@@ -34,18 +36,26 @@ function Riddle({ riddle }: RiddleProps) {
     }
     else {
       setIsCorrectGuess(false);
+      setIsShaking(true);
       setResponse("Access Denied.");
     }
   }
+
+  React.useEffect(() => {
+    if (isShaking) {
+      const timer = setTimeout(() => setIsShaking(false), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isShaking]);
 
   return (
     <div className="riddle">
       <details>
         <summary>{riddle.id}</summary>
-        <form className={`${!isCorrectGuess && "shake"}`} onSubmit={submitHandler}>
+        <form className={`${isShaking ? "shake" : ""}`} onSubmit={submitHandler}>
           <p className="description">{riddle.riddle}</p>
           <input type="text" placeholder="Enter password..." value={`${riddle.unlocked ? '✔ ' + guess : guess}`} onChange={changeHandler} disabled={riddle.unlocked} />
-          {response && <p className={`response ${!isCorrectGuess && "fail"}`}>{response}</p>}
+          {response && <p className={`response ${!isCorrectGuess ? "fail" : ""}`}>{response}</p>}
           {riddle.unlocked && <p className="clue">{riddle.description}</p>}
         </form>
       </details>
