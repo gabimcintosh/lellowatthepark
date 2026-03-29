@@ -133,6 +133,8 @@ input[type="text"] {
 input[type="text"]:disabled {
     color: var(--faded-green);
     border-color: var(--faded-green);
+    user-select: none;
+    -moz-user-select: none;
 }
 
 @media (max-width: 600px) {
