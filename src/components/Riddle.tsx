@@ -63,7 +63,7 @@ const Riddle = React.forwardRef<HTMLDivElement, RiddleProps>(
 
     return (
       <div ref={ref} className="riddle">
-        <details onToggle={toggleHandler}>
+        <details onToggle={toggleHandler} open={riddle.unlocked}>
           <summary>{riddle.id}</summary>
           <form className={`${isShaking ? "shake" : ""}`} onSubmit={submitHandler}>
             <p className="description">{riddle.riddle}</p>
