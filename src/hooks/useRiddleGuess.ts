@@ -1,7 +1,9 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, SubmitEvent } from "react";
 import { fuzzy } from "fast-fuzzy";
 import { RiddleT } from "../types";
 import { useProgramData } from "./useProgramData";
+
+const FUZZY_MATCH_THRESHOLD = 0.875;
 
 type UseRiddleGuessArgs = {
     riddle: RiddleT;
@@ -12,7 +14,8 @@ type UseRiddleGuessArgs = {
 };
 
 function useRiddleGuess({ riddle, decodedAnswer, onSolve, shake, clearShake }: UseRiddleGuessArgs) {
-    const { program, setProgram } = useProgramData();
+    const { activeProgram, updateActiveProgram } = useProgramData();
+
     const [guess, setGuess] = useState("");
     const [response, setResponse] = useState("");
     const [isCorrectGuess, setIsCorrectGuess] = useState(true);
@@ -21,20 +24,25 @@ function useRiddleGuess({ riddle, decodedAnswer, onSolve, shake, clearShake }: U
         setGuess(event.target.value);
     }
 
-    function submitHandler(event: FormEvent<HTMLFormElement>) {
+    function submitHandler(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
+
         const scoreResult = fuzzy(guess.trim(), decodedAnswer);
-        if (scoreResult > 0.875) {
+
+        if (scoreResult > FUZZY_MATCH_THRESHOLD) {
             setResponse("Access Granted.");
             setIsCorrectGuess(true);
             clearShake();
-            if (!program) return;
-            setProgram({
-                ...program,
-                riddles: program.riddles.map(r =>
+
+            if (!activeProgram) return;
+
+            updateActiveProgram({
+                ...activeProgram,
+                riddles: activeProgram.riddles.map(r =>
                     r.id === riddle.id ? { ...r, unlocked: true } : r
                 ),
             });
+
             onSolve();
         } else {
             setResponse("Access Denied.");

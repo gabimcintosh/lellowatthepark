@@ -3,26 +3,24 @@ import { ProgramT } from "../types";
 import { useProgramData } from "../hooks/useProgramData";
 
 function ProgramSelector() {
-  const { programs, setProgram } = useProgramData();
+  const { programs, selectProgram } = useProgramData();
 
   function selectChangeHandler(event: ChangeEvent<HTMLSelectElement>) {
-    const program = programs.find((program: ProgramT) => program.name === event.target.value);
-    if (!program) {
-      return;
-    }
-
-    setProgram({ ...program, active: true });
+    const selectedProgramName = event.target.value;
+    selectProgram(selectedProgramName);
   }
 
   return (
     <div id='program-selector'>
       <select onChange={selectChangeHandler} defaultValue="">
         <option value="" disabled hidden>Select your program</option>
+
         {programs.map((program: ProgramT) => (
           <option key={program.name} value={program.name}>
             {program.name}
           </option>
         ))}
+
       </select>
     </div>
   );

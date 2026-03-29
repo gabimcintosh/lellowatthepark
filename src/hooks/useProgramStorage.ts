@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ProgramT } from "../types";
 import { loadPrograms, savePrograms } from "../dataManager";
 
 function useProgramStorage() {
     const [programs, setPrograms] = useState<ProgramT[]>([]);
-    const [program, setProgram] = useState<ProgramT | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
+
+    const activeProgram = programs.find(p => p.active);
 
     useEffect(() => {
         let cancelled = false;
 
         const loadProgramData = async () => {
-            const programs = await loadPrograms();
+            const loadedPrograms = await loadPrograms();
             if (!cancelled) {
-                setPrograms(programs);
-                setProgram(programs.find(p => p.active));
+                setPrograms(loadedPrograms);
                 setIsLoading(false);
             }
         };
@@ -24,27 +24,42 @@ function useProgramStorage() {
     }, []);
 
     useEffect(() => {
-        if (!program) return;
+        if (isLoading) return;
 
-        const saveProgramData = async () => {
-            const updatedPrograms = programs.map(p =>
-                p.name === program.name ? program : p
-            );
-            await savePrograms(updatedPrograms);
-        };
+        savePrograms(programs).catch(console.error);
+    }, [programs, isLoading]);
 
-        saveProgramData();
-    }, [program]);
+    const selectProgram = useCallback((programName: string) => {
+        setPrograms(prev => prev.map(p => ({
+            ...p,
+            active: p.name === programName
+        })));
+    }, []);
 
-    function resetProgram() {
-        if (!program) return;
-        setProgram({
-            ...program,
-            riddles: program.riddles.map(r => ({ ...r, unlocked: false })),
-        });
-    }
+    const updateActiveProgram = useCallback((updatedProgram: ProgramT) => {
+        setPrograms(prev => prev.map(p =>
+            p.name === updatedProgram.name ? updatedProgram : p
+        ));
+    }, []);
 
-    return { programs, setPrograms, program, setProgram, isLoading, resetProgram };
+    const resetProgram = useCallback(() => {
+        setPrograms(prev => prev.map(p => {
+            if (!p.active) return p;
+            return {
+                ...p,
+                riddles: p.riddles.map(r => ({ ...r, unlocked: false })),
+            };
+        }));
+    }, []);
+
+    return {
+        programs,
+        activeProgram,
+        isLoading,
+        selectProgram,
+        updateActiveProgram,
+        resetProgram
+    };
 }
 
 export default useProgramStorage;
