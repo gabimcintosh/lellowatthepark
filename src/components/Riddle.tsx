@@ -1,72 +1,40 @@
-import React, { ChangeEvent, FormEvent } from "react";
+import React from "react";
 import { RiddleT } from "../types";
-import { fuzzy } from "fast-fuzzy";
-import { useProgramData } from "../hooks/useProgramData";
 import { ToggleState } from "../enums";
+import useShake from "../hooks/useShake";
+import useRiddleGuess from "../hooks/useRiddleGuess";
 
 type RiddleProps = {
   riddle: RiddleT;
   onSolve: () => void;
-}
+};
 
 const Riddle = React.forwardRef<HTMLDivElement, RiddleProps>(
   function Riddle({ riddle, onSolve }, ref) {
-    const { program, setProgram } = useProgramData();
-    const [guess, setGuess] = React.useState("");
-    const [response, setResponse] = React.useState("");
-    const [isCorrectGuess, setIsCorrectGuess] = React.useState(true);
-    const [isShaking, setIsShaking] = React.useState(false);
-    const decodedAnswer = atob(riddle.pw);
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const inputVal = `${riddle.unlocked ? `✔ ${decodedAnswer}` : guess}`
+    const decodedAnswer = atob(riddle.pw);
+    const { isShaking, shake, clearShake } = useShake();
+    const { guess, response, isCorrectGuess, changeHandler, submitHandler } = useRiddleGuess({
+      riddle,
+      decodedAnswer,
+      onSolve,
+      shake,
+      clearShake,
+    });
 
-    function changeHandler(event: ChangeEvent<HTMLInputElement>) {
-      setGuess(event.target.value);
-    }
+    const inputVal = riddle.unlocked ? `✔ ${decodedAnswer}` : guess;
 
     function toggleHandler(event: React.ToggleEvent<HTMLDetailsElement>) {
       if (event.newState === ToggleState.OPEN) {
-        if (inputRef.current) {
-          inputRef.current.focus();
-        }
+        inputRef.current?.focus();
       }
     }
-
-    function submitHandler(event: FormEvent<HTMLFormElement>) {
-      event.preventDefault();
-      const scoreResult = fuzzy(guess.trim(), decodedAnswer);
-      if (scoreResult > 0.875) {
-        setResponse("Access Granted.");
-        setIsCorrectGuess(true);
-        setIsShaking(false);
-        if (!program) {
-          return;
-        }
-        setProgram({
-          ...program,
-          riddles: program.riddles.map((r) => r.id === riddle.id ? { ...r, unlocked: true } : r)
-        });
-        onSolve();
-      }
-      else {
-        setResponse("Access Denied.");
-        setIsCorrectGuess(false);
-        setIsShaking(true);
-      }
-    }
-
-    React.useEffect(() => {
-      if (isShaking) {
-        const timer = setTimeout(() => setIsShaking(false), 400);
-        return () => clearTimeout(timer);
-      }
-    }, [isShaking]);
 
     return (
       <div ref={ref} className="riddle">
         <details onToggle={toggleHandler} open={riddle.unlocked}>
           <summary>{riddle.id}</summary>
-          <form className={`${isShaking ? "shake" : ""}`} onSubmit={submitHandler}>
+          <form className={isShaking ? "shake" : ""} onSubmit={submitHandler}>
             <p className="description">{riddle.riddle}</p>
             <input
               ref={inputRef}
