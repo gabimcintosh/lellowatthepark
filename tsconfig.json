@@ -21,12 +21,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-    "ignoreDeprecations": "6.0"
+    "noUncheckedSideEffectImports": true
   },
   "ts-node": {
     "compilerOptions": {
       "moduleResolution": "node",
+      "ignoreDeprecations": "6.0",
       "allowSyntheticDefaultImports": true,
       "esModuleInterop": true,
       "typeRoots": [
