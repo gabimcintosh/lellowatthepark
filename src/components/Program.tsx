@@ -6,9 +6,10 @@ const options: ScrollIntoViewOptions = { behavior: 'smooth' };
 
 type ProgramProps = {
   program: ProgramT;
+  resetProgram: () => void;
 };
 
-function Program({ program }: ProgramProps) {
+function Program({ program, resetProgram }: ProgramProps) {
   const riddleRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const [pendingScrollIndex, setPendingScrollIndex] = React.useState<number | null>(null);
 
@@ -55,6 +56,12 @@ function Program({ program }: ProgramProps) {
           onSolve={() => handleSolve(index)}
         />
       )}
+      {nextRiddleIndex === -1 &&
+        <div id="classic-ending">
+          <h2>The End</h2>
+          <button id="reset-selection" onClick={resetProgram}>Play Again?</button>
+        </div>
+      }
     </>
   );
 }

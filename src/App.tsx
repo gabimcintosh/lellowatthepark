@@ -10,6 +10,15 @@ function App() {
   const [program, setProgram] = useState<ProgramT | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
 
+  function resetProgram() {
+    if (!program) {
+      return;
+    }
+
+    const resetRiddles = program.riddles.map(r => ({ ...r, unlocked: false }));
+    setProgram({ ...program, riddles: resetRiddles });
+  }
+
   useEffect(() => {
     let cancelled = false;
 
@@ -27,7 +36,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!program) return;
+    if (!program) {
+      return;
+    }
 
     const saveProgramData = async () => {
       const updatedPrograms = programs.map(p =>
@@ -46,7 +57,7 @@ function App() {
   return (
     <div className="app">
       <ProgramDataContext.Provider value={{ programs, setPrograms, program, setProgram }}>
-        {program ? <Program program={program} /> : <ProgramSelector />}
+        {program ? <Program program={program} resetProgram={resetProgram} /> : <ProgramSelector />}
       </ProgramDataContext.Provider>
     </div>
   );
