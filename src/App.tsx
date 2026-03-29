@@ -1,54 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { ProgramT } from './types';
-import { loadPrograms, savePrograms } from './dataManager';
+import React from 'react';
 import ProgramSelector from './components/ProgramSelector';
 import Program from './components/Program';
 import { ProgramDataContext } from './contexts/ProgramDataContext';
+import useProgramStorage from './hooks/useProgramStorage';
 
 function App() {
-  const [programs, setPrograms] = useState<ProgramT[]>([]);
-  const [program, setProgram] = useState<ProgramT | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-
-  function resetProgram() {
-    if (!program) {
-      return;
-    }
-
-    const resetRiddles = program.riddles.map(r => ({ ...r, unlocked: false }));
-    setProgram({ ...program, riddles: resetRiddles });
-  }
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadProgramData = async () => {
-      const programs = await loadPrograms();
-      if (!cancelled) {
-        setPrograms(programs);
-        setProgram(programs.find(program => program.active));
-        setIsLoading(false);
-      }
-    };
-
-    loadProgramData();
-    return () => { cancelled = true; };
-  }, []);
-
-  useEffect(() => {
-    if (!program) {
-      return;
-    }
-
-    const saveProgramData = async () => {
-      const updatedPrograms = programs.map(p =>
-        p.name === program.name ? program : p
-      );
-      await savePrograms(updatedPrograms);
-    };
-
-    saveProgramData();
-  }, [program]);
+  const { programs, setPrograms, program, setProgram, isLoading, resetProgram } = useProgramStorage();
 
   if (isLoading) {
     return <div>Loading...</div>;
