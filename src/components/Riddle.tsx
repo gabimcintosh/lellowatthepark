@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent } from "react";
 import { RiddleT } from "../types";
 import { fuzzy } from "fast-fuzzy";
 import { useProgramData } from "../hooks/useProgramData";
+import { ToggleState } from "../enums";
 
 type RiddleProps = {
   riddle: RiddleT;
@@ -13,9 +14,18 @@ function Riddle({ riddle }: RiddleProps) {
   const [response, setResponse] = React.useState("");
   const [isCorrectGuess, setIsCorrectGuess] = React.useState(true);
   const [isShaking, setIsShaking] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
     setGuess(event.target.value);
+  }
+
+  function toggleHandler(event: React.ToggleEvent<HTMLDetailsElement>) {
+    if (event.newState === ToggleState.OPEN) {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }
   }
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
@@ -35,9 +45,9 @@ function Riddle({ riddle }: RiddleProps) {
       });
     }
     else {
+      setResponse("Access Denied.");
       setIsCorrectGuess(false);
       setIsShaking(true);
-      setResponse("Access Denied.");
     }
   }
 
@@ -50,11 +60,11 @@ function Riddle({ riddle }: RiddleProps) {
 
   return (
     <div className="riddle">
-      <details>
+      <details onToggle={toggleHandler}>
         <summary>{riddle.id}</summary>
         <form className={`${isShaking ? "shake" : ""}`} onSubmit={submitHandler}>
           <p className="description">{riddle.riddle}</p>
-          <input type="text" placeholder="Enter password..." value={`${riddle.unlocked ? '✔ ' + guess : guess}`} onChange={changeHandler} disabled={riddle.unlocked} />
+          <input ref={inputRef} type="text" placeholder="Enter password..." value={`${riddle.unlocked ? '✔ ' + guess : guess}`} onChange={changeHandler} disabled={riddle.unlocked} />
           {response && <p className={`response ${!isCorrectGuess ? "fail" : ""}`}>{response}</p>}
           {riddle.unlocked && <p className="clue">{riddle.description}</p>}
         </form>
