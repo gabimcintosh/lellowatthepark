@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { ProgramT } from "../types";
 import Riddle from "./Riddle";
-import useRiddleScroll from "../hooks/useRiddleScroll";
+import useProgressionScroll from "../hooks/useProgressionScroll";
 import getRiddlesToRender from "../utils/getRiddlesToRender";
 
 type ProgramProps = {
@@ -15,7 +15,7 @@ function Program({ program, resetProgram }: ProgramProps) {
     [program.riddles]
   );
 
-  useRiddleScroll(nextRiddleIndex);
+  useProgressionScroll(nextRiddleIndex);
 
   const isTheEnd = nextRiddleIndex === -1;
 
