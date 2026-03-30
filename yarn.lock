@@ -2373,6 +2373,7 @@ __metadata:
     gulp-json-validator: "npm:^1.2.0"
     gulp-notify: "npm:^5.0.0"
     gulp-rename: "npm:^2.1.0"
+    leven: "npm:^4.1.0"
     plugin-error: "npm:^2.0.1"
     react: "npm:^19.2.4"
     react-dom: "npm:^19.2.4"
@@ -2382,6 +2383,13 @@ __metadata:
     vite: "npm:^8.0.3"
   languageName: unknown
   linkType: soft
+
+"leven@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "leven@npm:4.1.0"
+  checksum: 10c0/de45316555624d7616c562055ce4773ad44dff7486a1696be300b040eb85472a429c2f18fd0f6352101b1fb01b336405b893f048d88d30f6fb7f8a2a2999a0c0
+  languageName: node
+  linkType: hard
 
 "liftoff@npm:^5.0.1":
   version: 5.0.1
