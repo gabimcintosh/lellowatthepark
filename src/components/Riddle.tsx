@@ -42,7 +42,7 @@ function Riddle({ id, riddle }: RiddleProps) {
             onChange={changeHandler}
             disabled={riddle.unlocked}
           />
-          {response && <p className={`response ${failClass}`}>{response}</p>}
+          {response && <p aria-live="polite" className={`response ${failClass}`}>{response}</p>}
           {riddle.unlocked && <p className="clue">{riddle.description}</p>}
         </form>
       </details>
