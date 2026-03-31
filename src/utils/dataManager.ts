@@ -9,14 +9,19 @@ const PROGRAM_DATA_KEY = 'programs';
  * @returns {Promise<ProgramT[]>} A promise that resolves to an array of programs.
  */
 export const loadPrograms = async (): Promise<ProgramT[]> => {
-    const localStoragePrograms = window.localStorage.getItem(PROGRAM_DATA_KEY);
-    if (localStoragePrograms) {
-        return decodeStringToObject(localStoragePrograms);
+    const raw = window.localStorage.getItem(PROGRAM_DATA_KEY);
+    if (raw) {
+        try {
+            return decodeStringToObject(raw);
+        } catch {
+            console.warn("Corrupt localStorage data, falling back to fetch.");
+            window.localStorage.removeItem(PROGRAM_DATA_KEY);
+        }
     }
-    const programsRsp = await fetch('./programs.txt');
-    const programsTxt = await programsRsp.text();
+    const res = await fetch('./programs.txt');
+    if (!res.ok) throw new Error(`Failed to fetch programs: ${res.status}`);
 
-    return decodeStringToObject(programsTxt);
+    return decodeStringToObject(await res.text());
 };
 
 /**
