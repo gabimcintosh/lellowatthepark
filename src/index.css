@@ -39,7 +39,9 @@ select {
     color: var(--green);
     padding: .75rem;
     font-family: inherit;
+    font-weight: inherit;
     font-size: 16px;
+    cursor: pointer;
     margin: .75rem 1rem;
     padding: 1.5rem;
 }
