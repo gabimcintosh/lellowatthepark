@@ -29,7 +29,7 @@ function useRiddleGuess({ riddle, decodedAnswer, shake, clearShake }: UseRiddleG
 
     const [guess, setGuess] = useState("");
     const [response, setResponse] = useState("");
-    const [isCorrectGuess, setIsCorrectGuess] = useState(true);
+    const [guessResult, setGuessResult] = useState<"correct" | "incorrect" | null>(null);
 
     function changeHandler(event: ChangeEvent<HTMLInputElement>) {
         setGuess(event.target.value);
@@ -40,7 +40,7 @@ function useRiddleGuess({ riddle, decodedAnswer, shake, clearShake }: UseRiddleG
 
         if (isGuessCloseEnough(guess, decodedAnswer)) {
             setResponse("Access Granted.");
-            setIsCorrectGuess(true);
+            setGuessResult("correct");
             clearShake();
 
             if (!activeProgram) return;
@@ -54,12 +54,12 @@ function useRiddleGuess({ riddle, decodedAnswer, shake, clearShake }: UseRiddleG
 
         } else {
             setResponse("Access Denied.");
-            setIsCorrectGuess(false);
+            setGuessResult("incorrect");
             shake();
         }
     }
 
-    return { guess, response, isCorrectGuess, changeHandler, submitHandler };
+    return { guess, response, isCorrectGuess: guessResult, changeHandler, submitHandler };
 }
 
 export default useRiddleGuess;
