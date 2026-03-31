@@ -5,6 +5,7 @@ import { loadPrograms, savePrograms } from "../utils/dataManager";
 function useProgramStorage() {
     const [programs, setPrograms] = useState<ProgramT[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<Error | null>(null);
 
     const activeProgram = programs.find(p => p.active);
 
@@ -12,10 +13,16 @@ function useProgramStorage() {
         let cancelled = false;
 
         const loadProgramData = async () => {
-            const loadedPrograms = await loadPrograms();
-            if (!cancelled) {
-                setPrograms(loadedPrograms);
-                setIsLoading(false);
+            try {
+                const loadedPrograms = await loadPrograms();
+                if (!cancelled) {
+                    setPrograms(loadedPrograms);
+                }
+            } catch (err) {
+                console.error("Failed to load programs:", err);
+                setError(err as Error);
+            } finally {
+                if (!cancelled) setIsLoading(false);
             }
         };
 
@@ -55,6 +62,7 @@ function useProgramStorage() {
     return {
         programs,
         activeProgram,
+        error,
         isLoading,
         selectProgram,
         updateActiveProgram,

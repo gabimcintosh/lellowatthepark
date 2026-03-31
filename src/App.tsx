@@ -8,6 +8,7 @@ function App() {
   const {
     programs,
     activeProgram,
+    error,
     isLoading,
     selectProgram,
     updateActiveProgram,
@@ -23,6 +24,10 @@ function App() {
 
   if (isLoading) {
     return <div className="loading-screen">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error-screen">{error.message}</div>;
   }
 
   return (
