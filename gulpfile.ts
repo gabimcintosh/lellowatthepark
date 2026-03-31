@@ -20,13 +20,11 @@ const clean = async () => await del(destDir);
 
 
 /**
- * Encodes the contents of a JSON file into a space-separated string of byte values
- * using MessagePack encoding, and updates the file's contents and path.
+ * Parses a JSON string, encodes it using MessagePack, and returns
+ * the result as a space-separated string of byte values.
  *
- * @param {Object} file - The file object to process.
- * @param {Buffer} file.contents - The contents of the file as a Buffer.
- * @param {string} file.path - The file path.
- * @returns {any} The modified file object with updated contents, path, and a `modified` flag.
+ * @param jsonStr - A valid JSON string to encode
+ * @returns The MessagePack-encoded data as a space-separated byte string
  */
 const convertJsonToMsgPack = (jsonStr: string): string => {
     const programs = JSON.parse(jsonStr);
