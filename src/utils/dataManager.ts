@@ -25,7 +25,7 @@ export const loadPrograms = async (): Promise<ProgramT[]> => {
 };
 
 /**
- * Saves the given array of programs to local storage after encrypting them.
+ * Saves the given array of programs to local storage after encoding them.
  *
  * @param programs The programs to be saved
  */
