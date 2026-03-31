@@ -77,7 +77,7 @@ const msgPack = (): Transform => {
  * in the process are handled with notifications.
  */
 function json() {
-    return src(`${srcDir}/*.json`)
+    const stream = src(`${srcDir}/*.json`)
         .pipe(jsonValidator())
         .pipe(jsonMinify())
         .pipe(jsonSchema('schema.json'))
@@ -87,11 +87,14 @@ function json() {
             return Buffer.from(JSON.stringify(programs))
         }))
         .pipe(msgPack())
-        .on('error', notify.onError({
-            title: '<%= error.plugin %>',
-            message: 'Error: <%= error.message %>',
-        }))
         .pipe(dest(destDir));
+
+    stream.on('error', notify.onError({
+        title: '<%= error.plugin %>',
+        message: 'Error: <%= error.message %>',
+    }));
+
+    return stream;
 }
 
 const encode = series(clean, json);
