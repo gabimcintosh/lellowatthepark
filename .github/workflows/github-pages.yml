@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: yarn.lock
           node-version: 22.x
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
       - name: Run build
         run: yarn build
       - name: Upload static files as artifact
