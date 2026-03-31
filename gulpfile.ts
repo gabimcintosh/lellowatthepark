@@ -46,14 +46,14 @@ const convertJsonToMsgPack = (jsonStr: string): string => {
 const msgPack = (): Transform => {
     return new Transform({
         objectMode: true,
-        transform(file: Vinyl, encoding, callback) {
+        transform(file: Vinyl, _encoding, callback) {
             if (file.isStream()) {
                 return callback(new PluginError('msgPackEncode', 'Streaming not supported'));
             }
 
             if (file.isBuffer()) {
                 try {
-                    const contents = file.contents.toString(encoding);
+                    const contents = file.contents.toString('utf8');
                     const encodedContents = convertJsonToMsgPack(contents);
                     file.contents = Buffer.from(encodedContents);
                     file.path = file.path.replace('.json', '.txt');
