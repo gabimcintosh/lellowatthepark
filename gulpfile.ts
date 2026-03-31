@@ -79,8 +79,7 @@ function json() {
         .pipe(jsonMinify())
         .pipe(jsonSchema('schema.json'))
         .pipe(concat('programs.json', (data: AppSaveDataT) => {
-            const programs: ProgramT[] = [];
-            Object.keys(data).forEach(jsonFileName => programs.push(data[jsonFileName]));
+            const programs: ProgramT[] = Object.values(data);
             return Buffer.from(JSON.stringify(programs))
         }))
         .pipe(msgPack())
