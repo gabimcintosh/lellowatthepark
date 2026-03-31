@@ -16,8 +16,7 @@ import type { AppSaveDataT, ProgramT } from './src/types';
 const srcDir = 'programs';
 const destDir = 'public';
 
-const clean = async () => await del(destDir);
-
+const clean = () => del(destDir);
 
 /**
  * Parses a JSON string, encodes it using MessagePack, and returns
