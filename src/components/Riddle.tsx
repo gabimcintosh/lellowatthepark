@@ -10,6 +10,7 @@ type RiddleProps = {
 
 function Riddle({ id, riddle }: RiddleProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  // Answers are Base64-encoded for light obfuscation only, not security.
   const decodedAnswer = atob(riddle.pw);
   const { isShaking, shake, clearShake } = useShake();
   const { guess, response, guessResult, changeHandler, submitHandler } = useRiddleGuess({
