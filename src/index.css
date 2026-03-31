@@ -150,3 +150,19 @@ input[type="text"]:disabled {
         font-size: 14px;
     }
 }
+
+.error-screen {
+    text-align: center;
+    margin-top: 4rem;
+    color: var(--red);
+}
+
+.error-screen button {
+    color: var(--red);
+    background-color: var(--black);
+    border: 1px solid var(--red);
+    cursor: pointer;
+    padding: 1rem;
+    font-size: large;
+    margin-top: 1rem;
+}
