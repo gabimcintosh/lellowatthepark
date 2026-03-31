@@ -59,7 +59,7 @@ function useRiddleGuess({ riddle, decodedAnswer, shake, clearShake }: UseRiddleG
         }
     }
 
-    return { guess, response, isCorrectGuess: guessResult, changeHandler, submitHandler };
+    return { guess, response, guessResult, changeHandler, submitHandler };
 }
 
 export default useRiddleGuess;

@@ -12,7 +12,7 @@ function Riddle({ id, riddle }: RiddleProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const decodedAnswer = atob(riddle.pw);
   const { isShaking, shake, clearShake } = useShake();
-  const { guess, response, isCorrectGuess, changeHandler, submitHandler } = useRiddleGuess({
+  const { guess, response, guessResult, changeHandler, submitHandler } = useRiddleGuess({
     riddle,
     decodedAnswer,
     shake,
@@ -20,6 +20,7 @@ function Riddle({ id, riddle }: RiddleProps) {
   });
 
   const inputVal = riddle.unlocked ? `✔ ${decodedAnswer}` : guess;
+  const failClass = guessResult === "incorrect" ? "fail" : "";
 
   function toggleHandler(event: React.ToggleEvent<HTMLDetailsElement>) {
     if (event.newState === "open") {
@@ -41,7 +42,7 @@ function Riddle({ id, riddle }: RiddleProps) {
             onChange={changeHandler}
             disabled={riddle.unlocked}
           />
-          {response && <p className={`response ${!isCorrectGuess ? "fail" : ""}`}>{response}</p>}
+          {response && <p className={`response ${failClass}`}>{response}</p>}
           {riddle.unlocked && <p className="clue">{riddle.description}</p>}
         </form>
       </details>
