@@ -59,7 +59,6 @@ const msgPack = (): Transform => {
                     const encodedContents = convertJsonToMsgPack(contents);
                     file.contents = Buffer.from(encodedContents);
                     file.path = file.path.replace('.json', '.txt');
-                    file.modified = true;
                     callback(null, file);
                 } catch (err) {
                     callback(new PluginError('gulp-msgpack-encode', err as Error));
