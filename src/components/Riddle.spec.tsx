@@ -1,0 +1,216 @@
+// src/components/Riddle.test.tsx
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
+import RiddleComponent from './Riddle';
+import type { Riddle } from '../App.types';
+
+// ---------------------------------------------------------------------------
+// Module mocks — isolate from hook implementations
+// ---------------------------------------------------------------------------
+
+vi.mock('../hooks/useShake', () => ({
+  default: vi.fn(),
+}));
+
+vi.mock('../hooks/useRiddleGuess', () => ({
+  default: vi.fn(),
+}));
+
+import useShake from '../hooks/useShake';
+import useRiddleGuess from '../hooks/useRiddleGuess';
+
+const mockUseShake = vi.mocked(useShake);
+const mockUseRiddleGuess = vi.mocked(useRiddleGuess);
+
+// ---------------------------------------------------------------------------
+// Default mock implementations
+// ---------------------------------------------------------------------------
+
+const defaultShake = {
+  isShaking: false,
+  shake: vi.fn(),
+  clearShake: vi.fn(),
+};
+
+const defaultRiddleGuess = {
+  guess: '',
+  response: '',
+  guessResult: null as 'correct' | 'incorrect' | null,
+  changeHandler: vi.fn(),
+  submitHandler: vi.fn((e: Event) => e.preventDefault()),
+};
+
+beforeEach(() => {
+  mockUseShake.mockReturnValue(defaultShake);
+  mockUseRiddleGuess.mockReturnValue(defaultRiddleGuess);
+  vi.spyOn(console, 'error').mockImplementation(() => { });
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.clearAllMocks();
+});
+
+// ---------------------------------------------------------------------------
+// Fixtures
+// ---------------------------------------------------------------------------
+
+// pw is Base64 of "secret"
+const lockedRiddle: Riddle = {
+  id: 'Step 1',
+  pw: btoa('secret'),
+  riddle: 'What has keys but no locks?',
+  description: 'A keyboard',
+  unlocked: false,
+};
+
+const unlockedRiddle: Riddle = { ...lockedRiddle, unlocked: true };
+
+function renderRiddle(riddle: Riddle = lockedRiddle, id = 'riddle-0') {
+  return render(<RiddleComponent id={id} riddle={riddle} />);
+}
+
+// ---------------------------------------------------------------------------
+// Rendering — locked state
+// ---------------------------------------------------------------------------
+
+describe('locked riddle', () => {
+  it('renders the riddle id in the summary', () => {
+    renderRiddle();
+    expect(screen.getByText('Step 1')).toBeInTheDocument();
+  });
+
+  it('renders the riddle question', () => {
+    renderRiddle();
+    expect(screen.getByText('What has keys but no locks?')).toBeInTheDocument();
+  });
+
+  it('renders an enabled input', () => {
+    renderRiddle();
+    expect(screen.getByRole('textbox')).not.toBeDisabled();
+  });
+
+  it('does not render the clue', () => {
+    renderRiddle();
+    expect(screen.queryByText('A keyboard')).not.toBeInTheDocument();
+  });
+
+  it('does not show a response message when response is empty', () => {
+    renderRiddle();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Rendering — unlocked state
+// ---------------------------------------------------------------------------
+
+describe('unlocked riddle', () => {
+  it('renders the decoded answer in the input prefixed with ✔', () => {
+    renderRiddle(unlockedRiddle);
+    expect(screen.getByRole('textbox')).toHaveValue('✔ secret');
+  });
+
+  it('renders the clue', () => {
+    renderRiddle(unlockedRiddle);
+    expect(screen.getByText('A keyboard')).toBeInTheDocument();
+  });
+
+  it('renders a disabled input', () => {
+    renderRiddle(unlockedRiddle);
+    expect(screen.getByRole('textbox')).toBeDisabled();
+  });
+
+  it('renders the details element as open', () => {
+    renderRiddle(unlockedRiddle);
+    expect(screen.getByRole('group')).toHaveAttribute('open');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Response messages
+// ---------------------------------------------------------------------------
+
+describe('response display', () => {
+  it('renders the response text when present', () => {
+    mockUseRiddleGuess.mockReturnValue({
+      ...defaultRiddleGuess,
+      response: 'Access Denied.',
+      guessResult: 'incorrect',
+    });
+    renderRiddle();
+    expect(screen.getByText('Access Denied.')).toBeInTheDocument();
+  });
+
+  it('applies the fail class for an incorrect guess', () => {
+    mockUseRiddleGuess.mockReturnValue({
+      ...defaultRiddleGuess,
+      response: 'Access Denied.',
+      guessResult: 'incorrect',
+    });
+    renderRiddle();
+    expect(screen.getByText('Access Denied.')).toHaveClass('fail');
+  });
+
+  it('does not apply the fail class for a correct guess', () => {
+    mockUseRiddleGuess.mockReturnValue({
+      ...defaultRiddleGuess,
+      response: 'Access Granted.',
+      guessResult: 'correct',
+    });
+    renderRiddle();
+    expect(screen.getByText('Access Granted.')).not.toHaveClass('fail');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Shake CSS class
+// ---------------------------------------------------------------------------
+
+describe('shake state', () => {
+  it('applies the shake class to the form when isShaking is true', () => {
+    mockUseShake.mockReturnValue({ ...defaultShake, isShaking: true });
+    renderRiddle();
+    // The form has aria-label containing the riddle id
+    const form = screen.getByRole('form');
+    expect(form).toHaveClass('shake');
+  });
+
+  it('does not apply the shake class when isShaking is false', () => {
+    renderRiddle();
+    expect(screen.getByRole('form')).not.toHaveClass('shake');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Toggle behaviour
+// ---------------------------------------------------------------------------
+
+describe('details toggle', () => {
+  it('forwards changeHandler to the input', async () => {
+    const user = userEvent.setup();
+    const changeHandler = vi.fn();
+    mockUseRiddleGuess.mockReturnValue({ ...defaultRiddleGuess, changeHandler });
+
+    // Render with open details so the input is visible
+    renderRiddle({ ...lockedRiddle, unlocked: true });
+
+    // Input is disabled when unlocked; use locked riddle rendered inside open details
+    // Render locked riddle with open details via a custom unlock state
+    const { unmount } = render(
+      <RiddleComponent id="r" riddle={{ ...lockedRiddle }} />
+    );
+
+    // Open the details first
+    const details = document.querySelector('details:not([open])') as HTMLDetailsElement;
+    fireEvent.toggle(details, { newState: 'open' });
+
+    const input = screen.getAllByRole('textbox')[0];
+    await user.type(input, 'hello');
+
+    expect(changeHandler).toHaveBeenCalled();
+    unmount();
+  });
+});
