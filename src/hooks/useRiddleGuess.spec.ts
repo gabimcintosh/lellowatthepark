@@ -1,11 +1,11 @@
 // src/hooks/useRiddleGuess.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import React from 'react';
+import React, { SubmitEvent } from 'react';
 import useRiddleGuess from './useRiddleGuess';
-import { ProgramDataContext } from '../contexts/ProgramDataContext';
 import type { ProgramDataContext as ContextType } from '../contexts/ProgramDataContext';
 import type { Riddle, Program } from '../App.types';
+import { createProgramDataWrapper } from '../../tests/createProgramDataWrapper';
 
 // ---------------------------------------------------------------------------
 // Module mock
@@ -40,38 +40,21 @@ const activeProgram: Program = {
 // Wrapper factory
 // ---------------------------------------------------------------------------
 
-function makeWrapper(overrides: Partial<ContextType> = {}) {
-    const updateActiveProgram = vi.fn();
-    const contextValue: ContextType = {
-        programs: [activeProgram],
-        activeProgram,
-        selectProgram: vi.fn(),
-        updateActiveProgram,
-        ...overrides,
-    };
-
-    function Wrapper({ children }: { children: React.ReactNode }) {
-        return (
-            <ProgramDataContext.Provider value= { contextValue } >
-            { children }
-            </ProgramDataContext.Provider>
-        );
-    }
-
-    return { Wrapper, updateActiveProgram };
-}
-
 const shake = vi.fn();
 const clearShake = vi.fn();
 
 function renderGuessHook(overrides: Partial<ContextType> = {}) {
-    const { Wrapper, updateActiveProgram } = makeWrapper(overrides);
+    const { Wrapper, contextValue } = createProgramDataWrapper({
+        activeProgram,
+        ...overrides,
+    });
     const { result } = renderHook(
         () => useRiddleGuess({ riddle, decodedAnswer: 'secret', shake, clearShake }),
         { wrapper: Wrapper }
     );
-    return { result, updateActiveProgram };
+    return { result, contextValue };
 }
+
 
 function makeSubmitEvent() {
     return { preventDefault: vi.fn() } as unknown as SubmitEvent<HTMLFormElement>;
@@ -153,29 +136,29 @@ describe('submitHandler with a correct guess', () => {
         expect(clearShake).toHaveBeenCalled();
     });
 
-    it('calls updateActiveProgram with the riddle unlocked', () => {
-        const { result, updateActiveProgram } = renderGuessHook();
+    it('calls contextValue with the riddle unlocked', () => {
+        const { result, contextValue } = renderGuessHook();
         act(() => result.current.submitHandler(makeSubmitEvent()));
 
-        expect(updateActiveProgram).toHaveBeenCalledOnce();
-        const updatedProgram: Program = updateActiveProgram.mock.calls[0][0];
+        expect(contextValue.updateActiveProgram).toHaveBeenCalledOnce();
+        const updatedProgram: Program = vi.mocked(contextValue.updateActiveProgram).mock.calls[0][0];
         const updatedRiddle = updatedProgram.riddles.find(r => r.id === riddle.id);
         expect(updatedRiddle?.unlocked).toBe(true);
     });
 
     it('does not unlock other riddles', () => {
-        const { result, updateActiveProgram } = renderGuessHook();
+        const { result, contextValue } = renderGuessHook();
         act(() => result.current.submitHandler(makeSubmitEvent()));
 
-        const updatedProgram: Program = updateActiveProgram.mock.calls[0][0];
+        const updatedProgram: Program = vi.mocked(contextValue.updateActiveProgram).mock.calls[0][0];
         const otherRiddle = updatedProgram.riddles.find(r => r.id === 'Step 2');
         expect(otherRiddle?.unlocked).toBe(false);
     });
 
-    it('does not call updateActiveProgram when activeProgram is undefined', () => {
-        const { result, updateActiveProgram } = renderGuessHook({ activeProgram: undefined });
+    it('does not call contextValue when activeProgram is undefined', () => {
+        const { result, contextValue } = renderGuessHook({ activeProgram: undefined });
         act(() => result.current.submitHandler(makeSubmitEvent()));
-        expect(updateActiveProgram).not.toHaveBeenCalled();
+        expect(contextValue.updateActiveProgram).not.toHaveBeenCalled();
     });
 });
 
@@ -202,9 +185,9 @@ describe('submitHandler with an incorrect guess', () => {
         expect(shake).toHaveBeenCalled();
     });
 
-    it('does not call updateActiveProgram', () => {
-        const { result, updateActiveProgram } = renderGuessHook();
+    it('does not call contextValue', () => {
+        const { result, contextValue } = renderGuessHook();
         act(() => result.current.submitHandler(makeSubmitEvent()));
-        expect(updateActiveProgram).not.toHaveBeenCalled();
+        expect(contextValue.updateActiveProgram).not.toHaveBeenCalled();
     });
 });
