@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { ProgramDataContext, ProgramDataContextT } from "../contexts/ProgramDataContext";
+import { ProgramDataContext } from "../contexts/ProgramDataContext";
 
-export function useProgramData(): ProgramDataContextT {
+export function useProgramData(): ProgramDataContext {
     const ctx = useContext(ProgramDataContext);
     if (!ctx) {
         throw new Error("useProgramData must be used within a ProgramDataContext.Provider");

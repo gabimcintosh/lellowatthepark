@@ -1,11 +1,11 @@
 import { createContext } from "react";
 import type { Program } from "../App.types";
 
-export type ProgramDataContextT = {
+export type ProgramDataContext = {
     programs: Program[];
     activeProgram: Program | undefined;
     selectProgram: (name: string) => void;
     updateActiveProgram: (program: Program) => void;
 }
 
-export const ProgramDataContext = createContext<ProgramDataContextT | null>(null);
+export const ProgramDataContext = createContext<ProgramDataContext | null>(null);
