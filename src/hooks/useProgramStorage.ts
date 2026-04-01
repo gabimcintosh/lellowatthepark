@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { ProgramT } from "../types";
+import type { Program } from "../App.types";
 import { loadPrograms, savePrograms } from "../utils/dataManager";
 
 function useProgramStorage() {
-    const [programs, setPrograms] = useState<ProgramT[]>([]);
+    const [programs, setPrograms] = useState<Program[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
@@ -43,7 +43,7 @@ function useProgramStorage() {
         })));
     }, []);
 
-    const updateActiveProgram = useCallback((updatedProgram: ProgramT) => {
+    const updateActiveProgram = useCallback((updatedProgram: Program) => {
         setPrograms(prev => prev.map(p =>
             p.name === updatedProgram.name ? updatedProgram : p
         ));

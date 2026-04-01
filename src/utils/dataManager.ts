@@ -1,4 +1,4 @@
-import { ProgramT } from "../types";
+import type { Program } from "../App.types";
 import { encode, decode } from "@msgpack/msgpack";
 
 const PROGRAM_DATA_KEY = 'programs';
@@ -6,9 +6,9 @@ const PROGRAM_DATA_KEY = 'programs';
 /**
  * Load the programs from local storage or from a HTTP request
  *
- * @returns {Promise<ProgramT[]>} A promise that resolves to an array of programs.
+ * @returns {Promise<Program[]>} A promise that resolves to an array of programs.
  */
-export const loadPrograms = async (): Promise<ProgramT[]> => {
+export const loadPrograms = async (): Promise<Program[]> => {
     const raw = window.localStorage.getItem(PROGRAM_DATA_KEY);
     if (raw) {
         try {
@@ -29,7 +29,7 @@ export const loadPrograms = async (): Promise<ProgramT[]> => {
  *
  * @param programs The programs to be saved
  */
-export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
+export const savePrograms = async (programs: Program[]): Promise<void> => {
     const programData = encodeObjectToString(programs);
     window.localStorage.setItem(PROGRAM_DATA_KEY, programData);
 };
@@ -40,7 +40,7 @@ export const savePrograms = async (programs: ProgramT[]): Promise<void> => {
  * @param programs The JavaScript object to encode
  * @returns The encoded string representation of the object.
  */
-export const encodeObjectToString = (programs: ProgramT[]): string => {
+export const encodeObjectToString = (programs: Program[]): string => {
     const encodedArray = encode(programs) as Uint8Array;
     const encodedString = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
 
@@ -53,10 +53,10 @@ export const encodeObjectToString = (programs: ProgramT[]): string => {
  * @param encodedString The encoded string representation of the object
  * @returns The decoded JavaScript object.
  */
-export const decodeStringToObject = (encodedString: string): ProgramT[] => {
+export const decodeStringToObject = (encodedString: string): Program[] => {
     const byteArray = encodedString.split(' ').map(byte => Number.parseInt(byte));
     const uInt8Array = Uint8Array.from(byteArray);
-    const decodedObject = decode(uInt8Array) as ProgramT[];
+    const decodedObject = decode(uInt8Array) as Program[];
 
     return decodedObject;
 };

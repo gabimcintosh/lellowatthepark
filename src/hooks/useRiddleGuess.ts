@@ -1,10 +1,10 @@
 import { useState, ChangeEvent, SubmitEvent } from "react";
-import { RiddleT } from "../types";
+import type { Riddle } from "../App.types";
 import { useProgramData } from "./useProgramData";
 import isGuessCloseEnough from "../utils/isGuessCloseEnough";
 
 type UseRiddleGuessArgs = {
-    riddle: RiddleT;
+    riddle: Riddle;
     decodedAnswer: string;
     shake: () => void;
     clearShake: () => void;

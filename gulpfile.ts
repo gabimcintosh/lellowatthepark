@@ -11,7 +11,7 @@ import Vinyl from 'vinyl';
 import notify from 'gulp-notify';
 import concat from 'gulp-json-concat';
 
-import type { AppSaveDataT, ProgramT } from './src/types';
+import type { AppSaveData, Program } from './src/App.types';
 
 const srcDir = 'programs';
 const destDir = 'public';
@@ -77,8 +77,8 @@ function json() {
         .pipe(jsonValidator())
         .pipe(jsonMinify())
         .pipe(jsonSchema('schema.json'))
-        .pipe(concat('programs.json', (data: AppSaveDataT) => {
-            const programs: ProgramT[] = Object.values(data);
+        .pipe(concat('programs.json', (data: AppSaveData) => {
+            const programs: Program[] = Object.values(data);
             return Buffer.from(JSON.stringify(programs))
         }))
         .pipe(msgPack())
