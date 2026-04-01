@@ -23,6 +23,7 @@
     "@types/vinyl": "^2.0.12",
     "@vitejs/plugin-react": "^6.0.1",
     "@vitest/coverage-v8": "^4.1.2",
+    "@vitest/ui": "4.1.2",
     "del": "^8.0.1",
     "gulp": "^5.0.1",
     "gulp-cli": "^3.1.0",
