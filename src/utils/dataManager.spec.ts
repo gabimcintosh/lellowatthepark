@@ -141,13 +141,15 @@ describe("savePrograms", () => {
     await savePrograms(multiplePrograms);
     const stored = window.localStorage.getItem("programs");
     expect(stored).not.toBeNull();
-    expect(decodeStringToObject(stored!)).toEqual(multiplePrograms);
+    if (stored === null) throw new Error("stored should not be null");
+    expect(decodeStringToObject(stored)).toEqual(multiplePrograms);
   });
 
   it("stores an empty array without throwing", async () => {
     await expect(savePrograms([])).resolves.not.toThrow();
     const stored = window.localStorage.getItem("programs");
-    expect(decodeStringToObject(stored!)).toEqual([]);
+    if (stored === null) throw new Error("stored should not be null");
+    expect(decodeStringToObject(stored)).toEqual([]);
   });
 
   it("overwrites a previously saved value", async () => {
@@ -159,7 +161,8 @@ describe("savePrograms", () => {
 
     const stored = window.localStorage.getItem("programs");
     // Final value should reflect the last write
-    expect(decodeStringToObject(stored!)).toEqual(multiplePrograms);
+    if (stored === null) throw new Error("stored should not be null");
+    expect(decodeStringToObject(stored)).toEqual(multiplePrograms);
   });
 });
 

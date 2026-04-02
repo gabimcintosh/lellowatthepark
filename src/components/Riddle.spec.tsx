@@ -215,6 +215,7 @@ describe("details toggle", () => {
     const details = container.querySelector("details");
 
     expect(details).not.toBeNull();
+    if (details === null) throw new Error("details should not be null");
     expect(input).not.toHaveFocus(); // Ensure it isn't focused initially
 
     // 5. Construct the ToggleEvent
@@ -224,7 +225,7 @@ describe("details toggle", () => {
     Object.defineProperty(toggleEvent, "newState", { value: "open" });
 
     // 6. Fire the event
-    fireEvent(details!, toggleEvent);
+    fireEvent(details, toggleEvent);
 
     // 7. Assert Line 28 executed successfully
     expect(input).toHaveFocus();

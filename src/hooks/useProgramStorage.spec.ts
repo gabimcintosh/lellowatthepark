@@ -272,7 +272,7 @@ describe("selectProgram", () => {
       expect(mockSavePrograms.mock.calls.length).toBeGreaterThan(callsBefore),
     );
 
-    const lastCall = mockSavePrograms.mock.calls.at(-1)![0];
+    const lastCall = mockSavePrograms.mock.calls.at(-1)?.[0];
     expect(lastCall.find((p) => p.name === "Beta")?.active).toBe(true);
     expect(lastCall.find((p) => p.name === "Alpha")?.active).toBe(false);
   });
