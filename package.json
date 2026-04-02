@@ -53,5 +53,10 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.13.0",
+  "dependenciesMeta": {
+    "@biomejs/biome@2.4.10": {
+      "unplugged": true
+    }
+  }
 }
