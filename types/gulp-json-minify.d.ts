@@ -1,1 +1,1 @@
-declare module 'gulp-json-minify';
+declare module "gulp-json-minify";

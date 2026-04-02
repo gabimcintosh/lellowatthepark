@@ -1,7 +1,7 @@
+import { decode, encode } from "@msgpack/msgpack";
 import type { Program } from "../App.types";
-import { encode, decode } from "@msgpack/msgpack";
 
-const PROGRAM_DATA_KEY = 'programs';
+const PROGRAM_DATA_KEY = "programs";
 
 /**
  * Load the programs from local storage or from a HTTP request
@@ -9,19 +9,19 @@ const PROGRAM_DATA_KEY = 'programs';
  * @returns {Promise<Program[]>} A promise that resolves to an array of programs.
  */
 export const loadPrograms = async (): Promise<Program[]> => {
-    const raw = window.localStorage.getItem(PROGRAM_DATA_KEY);
-    if (raw) {
-        try {
-            return decodeStringToObject(raw);
-        } catch {
-            console.warn("Corrupt localStorage data, falling back to fetch.");
-            window.localStorage.removeItem(PROGRAM_DATA_KEY);
-        }
+  const raw = window.localStorage.getItem(PROGRAM_DATA_KEY);
+  if (raw) {
+    try {
+      return decodeStringToObject(raw);
+    } catch {
+      console.warn("Corrupt localStorage data, falling back to fetch.");
+      window.localStorage.removeItem(PROGRAM_DATA_KEY);
     }
-    const res = await fetch('./programs.txt');
-    if (!res.ok) throw new Error(`Failed to fetch programs: ${res.status}`);
+  }
+  const res = await fetch("./programs.txt");
+  if (!res.ok) throw new Error(`Failed to fetch programs: ${res.status}`);
 
-    return decodeStringToObject(await res.text());
+  return decodeStringToObject(await res.text());
 };
 
 /**
@@ -30,8 +30,8 @@ export const loadPrograms = async (): Promise<Program[]> => {
  * @param programs The programs to be saved
  */
 export const savePrograms = async (programs: Program[]): Promise<void> => {
-    const programData = encodeObjectToString(programs);
-    window.localStorage.setItem(PROGRAM_DATA_KEY, programData);
+  const programData = encodeObjectToString(programs);
+  window.localStorage.setItem(PROGRAM_DATA_KEY, programData);
 };
 
 /**
@@ -41,10 +41,12 @@ export const savePrograms = async (programs: Program[]): Promise<void> => {
  * @returns The encoded string representation of the object.
  */
 export const encodeObjectToString = (programs: Program[]): string => {
-    const encodedArray = encode(programs) as Uint8Array;
-    const encodedString = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
+  const encodedArray = encode(programs) as Uint8Array;
+  const encodedString = Array.from(encodedArray)
+    .map((byte) => byte.toString())
+    .join(" ");
 
-    return encodedString;
+  return encodedString;
 };
 
 /**
@@ -54,9 +56,11 @@ export const encodeObjectToString = (programs: Program[]): string => {
  * @returns The decoded JavaScript object.
  */
 export const decodeStringToObject = (encodedString: string): Program[] => {
-    const byteArray = encodedString.split(' ').map(byte => Number.parseInt(byte));
-    const uInt8Array = Uint8Array.from(byteArray);
-    const decodedObject = decode(uInt8Array) as Program[];
+  const byteArray = encodedString
+    .split(" ")
+    .map((byte) => Number.parseInt(byte));
+  const uInt8Array = Uint8Array.from(byteArray);
+  const decodedObject = decode(uInt8Array) as Program[];
 
-    return decodedObject;
+  return decodedObject;
 };

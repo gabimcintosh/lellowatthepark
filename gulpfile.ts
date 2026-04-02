@@ -1,20 +1,20 @@
-import { src, dest, series } from 'gulp';
-import { deleteAsync as del } from 'del';
-import jsonMinify from 'gulp-json-minify';
-import jsonValidator from 'gulp-json-validator';
-import jsonSchema from 'gulp-json-schema';
-import { Buffer } from 'node:buffer';
-import { Transform } from 'node:stream';
-import { encode as msgPackEncode } from '@msgpack/msgpack';
-import PluginError from 'plugin-error';
-import Vinyl from 'vinyl';
-import notify from 'gulp-notify';
-import concat from 'gulp-json-concat';
+import { Buffer } from "node:buffer";
+import { Transform } from "node:stream";
+import { encode as msgPackEncode } from "@msgpack/msgpack";
+import { deleteAsync as del } from "del";
+import { dest, series, src } from "gulp";
+import concat from "gulp-json-concat";
+import jsonMinify from "gulp-json-minify";
+import jsonSchema from "gulp-json-schema";
+import jsonValidator from "gulp-json-validator";
+import notify from "gulp-notify";
+import PluginError from "plugin-error";
+import type Vinyl from "vinyl";
 
-import type { AppSaveData, Program } from './src/App.types';
+import type { AppSaveData, Program } from "./src/App.types";
 
-const srcDir = 'programs';
-const destDir = 'public';
+const srcDir = "programs";
+const destDir = "public";
 
 const clean = () => del(destDir);
 
@@ -26,13 +26,14 @@ const clean = () => del(destDir);
  * @returns The MessagePack-encoded data as a space-separated byte string
  */
 const convertJsonToMsgPack = (jsonStr: string): string => {
-    const programs = JSON.parse(jsonStr);
-    const encodedArray = msgPackEncode(programs);
-    const encodedString = Array.from(encodedArray).map(byte => byte.toString()).join(' ');
+  const programs = JSON.parse(jsonStr);
+  const encodedArray = msgPackEncode(programs);
+  const encodedString = Array.from(encodedArray)
+    .map((byte) => byte.toString())
+    .join(" ");
 
-    return encodedString;
+  return encodedString;
 };
-
 
 /**
  * Creates a Transform stream that encodes input files using a custom
@@ -43,27 +44,29 @@ const convertJsonToMsgPack = (jsonStr: string): string => {
  *
  */
 const msgPack = (): Transform => {
-    return new Transform({
-        objectMode: true,
-        transform(file: Vinyl, _encoding, callback) {
-            if (file.isStream()) {
-                return callback(new PluginError('msgPackEncode', 'Streaming not supported'));
-            }
+  return new Transform({
+    objectMode: true,
+    transform(file: Vinyl, _encoding, callback) {
+      if (file.isStream()) {
+        return callback(
+          new PluginError("msgPackEncode", "Streaming not supported"),
+        );
+      }
 
-            if (file.isBuffer()) {
-                try {
-                    const contents = file.contents.toString('utf8');
-                    const encodedContents = convertJsonToMsgPack(contents);
-                    file.contents = Buffer.from(encodedContents);
-                    file.path = file.path.replace('.json', '.txt');
-                    callback(null, file);
-                } catch (err) {
-                    callback(new PluginError('gulp-msgpack-encode', err as Error));
-                }
-            }
+      if (file.isBuffer()) {
+        try {
+          const contents = file.contents.toString("utf8");
+          const encodedContents = convertJsonToMsgPack(contents);
+          file.contents = Buffer.from(encodedContents);
+          file.path = file.path.replace(".json", ".txt");
+          callback(null, file);
+        } catch (err) {
+          callback(new PluginError("gulp-msgpack-encode", err as Error));
         }
-    });
-}
+      }
+    },
+  });
+};
 
 /**
  * Processes JSON files from the source directory by validating,
@@ -73,23 +76,28 @@ const msgPack = (): Transform => {
  * in the process are handled with notifications.
  */
 function json() {
-    const stream = src(`${srcDir}/*.json`)
-        .pipe(jsonValidator())
-        .pipe(jsonMinify())
-        .pipe(jsonSchema('schema.json'))
-        .pipe(concat('programs.json', (data: AppSaveData) => {
-            const programs: Program[] = Object.values(data);
-            return Buffer.from(JSON.stringify(programs))
-        }))
-        .pipe(msgPack())
-        .pipe(dest(destDir));
+  const stream = src(`${srcDir}/*.json`)
+    .pipe(jsonValidator())
+    .pipe(jsonMinify())
+    .pipe(jsonSchema("schema.json"))
+    .pipe(
+      concat("programs.json", (data: AppSaveData) => {
+        const programs: Program[] = Object.values(data);
+        return Buffer.from(JSON.stringify(programs));
+      }),
+    )
+    .pipe(msgPack())
+    .pipe(dest(destDir));
 
-    stream.on('error', notify.onError({
-        title: '<%= error.plugin %>',
-        message: 'Error: <%= error.message %>',
-    }));
+  stream.on(
+    "error",
+    notify.onError({
+      title: "<%= error.plugin %>",
+      message: "Error: <%= error.message %>",
+    }),
+  );
 
-    return stream;
+  return stream;
 }
 
 const encode = series(clean, json);

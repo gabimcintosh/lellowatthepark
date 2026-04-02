@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from "react";
+import React, { type ChangeEvent } from "react";
 import type { Program } from "../App.types";
 import { useProgramData } from "../hooks/useProgramData";
 
@@ -11,16 +11,17 @@ function ProgramSelector() {
   }
 
   return (
-    <div id='program-selector'>
+    <div id="program-selector">
       <select onChange={selectChangeHandler} defaultValue="">
-        <option value="" disabled hidden>Select your program</option>
+        <option value="" disabled hidden>
+          Select your program
+        </option>
 
         {programs.map((program: Program) => (
           <option key={program.name} value={program.name}>
             {program.name}
           </option>
         ))}
-
       </select>
     </div>
   );

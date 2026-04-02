@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import ProgramSelector from './components/ProgramSelector';
-import Program from './components/Program';
-import { ProgramDataContext } from './contexts/ProgramDataContext';
-import useProgramStorage from './hooks/useProgramStorage';
+import React, { useMemo } from "react";
+import Program from "./components/Program";
+import ProgramSelector from "./components/ProgramSelector";
+import { ProgramDataContext } from "./contexts/ProgramDataContext";
+import useProgramStorage from "./hooks/useProgramStorage";
 
 function App() {
   const {
@@ -12,15 +12,18 @@ function App() {
     isLoading,
     selectProgram,
     updateActiveProgram,
-    resetProgram
+    resetProgram,
   } = useProgramStorage();
 
-  const contextValue = useMemo(() => ({
-    programs,
-    activeProgram,
-    selectProgram,
-    updateActiveProgram
-  }), [programs, activeProgram, selectProgram, updateActiveProgram]);
+  const contextValue = useMemo(
+    () => ({
+      programs,
+      activeProgram,
+      selectProgram,
+      updateActiveProgram,
+    }),
+    [programs, activeProgram, selectProgram, updateActiveProgram],
+  );
 
   if (isLoading) {
     return <div className="loading-screen">Loading...</div>;

@@ -1,14 +1,14 @@
 // src/components/ErrorBoundary.test.tsx
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import '@testing-library/jest-dom/vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import React from 'react';
-import ErrorBoundary from './ErrorBoundary';
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import React from "react";
+import ErrorBoundary from "./ErrorBoundary";
 
 // Suppress the expected console.error output from React's error boundary machinery
 beforeEach(() => {
-  vi.spyOn(console, 'error').mockImplementation(() => { });
+  vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
@@ -20,7 +20,7 @@ afterEach(() => {
 // ---------------------------------------------------------------------------
 
 function Bomb({ shouldThrow }: { shouldThrow: boolean }) {
-  if (shouldThrow) throw new Error('Explosion!');
+  if (shouldThrow) throw new Error("Explosion!");
   return <p>Safe content</p>;
 }
 
@@ -28,14 +28,14 @@ function Bomb({ shouldThrow }: { shouldThrow: boolean }) {
 // Normal (no error) rendering
 // ---------------------------------------------------------------------------
 
-describe('when no child throws', () => {
-  it('renders children normally', () => {
+describe("when no child throws", () => {
+  it("renders children normally", () => {
     render(
       <ErrorBoundary>
         <p>Hello</p>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.getByText('Hello')).toBeInTheDocument();
+    expect(screen.getByText("Hello")).toBeInTheDocument();
   });
 });
 
@@ -43,42 +43,42 @@ describe('when no child throws', () => {
 // Error state — default fallback
 // ---------------------------------------------------------------------------
 
-describe('when a child throws and no fallback prop is given', () => {
-  it('renders the built-in error UI', () => {
+describe("when a child throws and no fallback prop is given", () => {
+  it("renders the built-in error UI", () => {
     render(
       <ErrorBoundary>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.getByText('A critical error occurred.')).toBeInTheDocument();
+    expect(screen.getByText("A critical error occurred.")).toBeInTheDocument();
   });
 
-  it('renders a Retry button', () => {
+  it("renders a Retry button", () => {
     render(
       <ErrorBoundary>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
   });
 
-  it('does not render the children', () => {
+  it("does not render the children", () => {
     render(
       <ErrorBoundary>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.queryByText('Safe content')).not.toBeInTheDocument();
+    expect(screen.queryByText("Safe content")).not.toBeInTheDocument();
   });
 
-  it('logs the error via console.error', () => {
+  it("logs the error via console.error", () => {
     render(
       <ErrorBoundary>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
     expect(console.error).toHaveBeenCalledWith(
-      '[ErrorBoundary]',
+      "[ErrorBoundary]",
       expect.any(Error),
       expect.any(String),
     );
@@ -89,15 +89,17 @@ describe('when a child throws and no fallback prop is given', () => {
 // Error state — custom fallback prop
 // ---------------------------------------------------------------------------
 
-describe('when a child throws and a fallback prop is provided', () => {
-  it('renders the custom fallback instead of the built-in UI', () => {
+describe("when a child throws and a fallback prop is provided", () => {
+  it("renders the custom fallback instead of the built-in UI", () => {
     render(
       <ErrorBoundary fallback={<p>Custom fallback</p>}>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
-    expect(screen.getByText('Custom fallback')).toBeInTheDocument();
-    expect(screen.queryByText('A critical error occurred.')).not.toBeInTheDocument();
+    expect(screen.getByText("Custom fallback")).toBeInTheDocument();
+    expect(
+      screen.queryByText("A critical error occurred."),
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -105,8 +107,8 @@ describe('when a child throws and a fallback prop is provided', () => {
 // Reset behaviour
 // ---------------------------------------------------------------------------
 
-describe('reset via Retry button', () => {
-  it('clears the error state and re-renders children when the child no longer throws', async () => {
+describe("reset via Retry button", () => {
+  it("clears the error state and re-renders children when the child no longer throws", async () => {
     const user = userEvent.setup();
 
     // A simpler, more deterministic approach: render a controlled version
@@ -114,21 +116,23 @@ describe('reset via Retry button', () => {
     const { rerender } = render(
       <ErrorBoundary>
         <Bomb shouldThrow />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('A critical error occurred.')).toBeInTheDocument();
+    expect(screen.getByText("A critical error occurred.")).toBeInTheDocument();
 
     // Re-render with a non-throwing child before clicking Retry
     rerender(
       <ErrorBoundary>
         <Bomb shouldThrow={false} />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Retry' }));
+    await user.click(screen.getByRole("button", { name: "Retry" }));
 
-    expect(screen.getByText('Safe content')).toBeInTheDocument();
-    expect(screen.queryByText('A critical error occurred.')).not.toBeInTheDocument();
+    expect(screen.getByText("Safe content")).toBeInTheDocument();
+    expect(
+      screen.queryByText("A critical error occurred."),
+    ).not.toBeInTheDocument();
   });
 });

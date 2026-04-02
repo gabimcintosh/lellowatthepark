@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import type { Program } from "../App.types";
-import Riddle from "./Riddle";
 import useProgressionScroll from "../hooks/useProgressionScroll";
 import getRiddlesToRender from "../utils/getRiddlesToRender";
+import Riddle from "./Riddle";
 
 type ProgramProps = {
   program: Program;
@@ -12,7 +12,7 @@ type ProgramProps = {
 function Program({ program, resetProgram }: ProgramProps) {
   const { riddlesToRender, nextRiddleIndex } = useMemo(
     () => getRiddlesToRender(program.riddles),
-    [program.riddles]
+    [program.riddles],
   );
 
   useProgressionScroll(nextRiddleIndex);
@@ -21,20 +21,18 @@ function Program({ program, resetProgram }: ProgramProps) {
 
   return (
     <>
-      <h1 className='title'>{program.name}</h1>
-      {riddlesToRender.map((riddle, index) =>
-        <Riddle
-          key={riddle.id}
-          id={`riddle-${index}`}
-          riddle={riddle}
-        />
-      )}
-      {isTheEnd &&
+      <h1 className="title">{program.name}</h1>
+      {riddlesToRender.map((riddle, index) => (
+        <Riddle key={riddle.id} id={`riddle-${index}`} riddle={riddle} />
+      ))}
+      {isTheEnd && (
         <div id="classic-ending">
           <h2>The End</h2>
-          <button id="reset-selection" onClick={resetProgram}>Play Again?</button>
+          <button id="reset-selection" onClick={resetProgram}>
+            Play Again?
+          </button>
         </div>
-      }
+      )}
     </>
   );
 }

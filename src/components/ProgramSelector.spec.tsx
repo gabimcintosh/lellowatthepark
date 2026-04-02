@@ -1,26 +1,25 @@
 // src/components/ProgramSelector.test.tsx
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/vitest';
-import userEvent from '@testing-library/user-event';
-import React from 'react';
-import ProgramSelector from './ProgramSelector';
-import { ProgramDataContext } from '../contexts/ProgramDataContext';
-import type { ProgramDataContext as ProgramDataContextType } from '../contexts/ProgramDataContext';
-import type { Program } from '../App.types';
+
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
+import userEvent from "@testing-library/user-event";
+import React from "react";
+import type { Program } from "../App.types";
+import type { ProgramDataContext as ProgramDataContextType } from "../contexts/ProgramDataContext";
+import { ProgramDataContext } from "../contexts/ProgramDataContext";
+import ProgramSelector from "./ProgramSelector";
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 const programs: Program[] = [
-  { name: 'Alpha', active: false, riddles: [] },
-  { name: 'Beta', active: false, riddles: [] },
+  { name: "Alpha", active: false, riddles: [] },
+  { name: "Beta", active: false, riddles: [] },
 ];
 
-function renderWithContext(
-  overrides: Partial<ProgramDataContextType> = {}
-) {
+function renderWithContext(overrides: Partial<ProgramDataContextType> = {}) {
   const selectProgram = vi.fn();
   const contextValue: ProgramDataContextType = {
     programs,
@@ -33,7 +32,7 @@ function renderWithContext(
   render(
     <ProgramDataContext.Provider value={contextValue}>
       <ProgramSelector />
-    </ProgramDataContext.Provider>
+    </ProgramDataContext.Provider>,
   );
 
   return { selectProgram };
@@ -43,28 +42,28 @@ function renderWithContext(
 // Rendering
 // ---------------------------------------------------------------------------
 
-describe('rendering', () => {
-  it('renders the placeholder option', () => {
+describe("rendering", () => {
+  it("renders the placeholder option", () => {
     renderWithContext();
-    expect(screen.getByText('Select your program')).toBeInTheDocument();
+    expect(screen.getByText("Select your program")).toBeInTheDocument();
   });
 
-  it('renders an option for each program', () => {
+  it("renders an option for each program", () => {
     renderWithContext();
-    expect(screen.getByRole('option', { name: 'Alpha' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Beta' })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Alpha" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Beta" })).toBeInTheDocument();
   });
 
-  it('renders the correct number of selectable options', () => {
+  it("renders the correct number of selectable options", () => {
     renderWithContext();
     // You might think there should be placeholder + 2 programs = 3 options,
     // but the placeholder is not selectable, so subtract 1
-    expect(screen.getAllByRole('option')).toHaveLength(2);
+    expect(screen.getAllByRole("option")).toHaveLength(2);
   });
 
-  it('renders no program options when the programs list is empty', () => {
+  it("renders no program options when the programs list is empty", () => {
     renderWithContext({ programs: [] });
-    expect(screen.getAllByText('Select your program')).toHaveLength(1);
+    expect(screen.getAllByText("Select your program")).toHaveLength(1);
   });
 });
 
@@ -72,22 +71,22 @@ describe('rendering', () => {
 // Interaction
 // ---------------------------------------------------------------------------
 
-describe('selecting a program', () => {
-  it('calls selectProgram with the chosen program name', async () => {
+describe("selecting a program", () => {
+  it("calls selectProgram with the chosen program name", async () => {
     const user = userEvent.setup();
     const { selectProgram } = renderWithContext();
 
-    await user.selectOptions(screen.getByRole('combobox'), 'Beta');
+    await user.selectOptions(screen.getByRole("combobox"), "Beta");
 
-    expect(selectProgram).toHaveBeenCalledWith('Beta');
+    expect(selectProgram).toHaveBeenCalledWith("Beta");
   });
 
-  it('calls selectProgram once per selection change', async () => {
+  it("calls selectProgram once per selection change", async () => {
     const user = userEvent.setup();
     const { selectProgram } = renderWithContext();
 
-    await user.selectOptions(screen.getByRole('combobox'), 'Alpha');
-    await user.selectOptions(screen.getByRole('combobox'), 'Beta');
+    await user.selectOptions(screen.getByRole("combobox"), "Alpha");
+    await user.selectOptions(screen.getByRole("combobox"), "Beta");
 
     expect(selectProgram).toHaveBeenCalledTimes(2);
   });

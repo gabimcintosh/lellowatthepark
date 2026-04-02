@@ -1,6 +1,6 @@
-import React from 'react';
-import { ProgramDataContext } from '../src/contexts/ProgramDataContext';
-import { vi } from 'vitest';
+import type React from "react";
+import { vi } from "vitest";
+import { ProgramDataContext } from "../src/contexts/ProgramDataContext";
 
 const defaultContextValue: ProgramDataContext = {
   programs: [],
@@ -9,7 +9,9 @@ const defaultContextValue: ProgramDataContext = {
   updateActiveProgram: vi.fn(),
 };
 
-export function createProgramDataWrapper(overrides: Partial<ProgramDataContext> = {}) {
+export function createProgramDataWrapper(
+  overrides: Partial<ProgramDataContext> = {},
+) {
   const contextValue: ProgramDataContext = {
     ...defaultContextValue,
     ...overrides,

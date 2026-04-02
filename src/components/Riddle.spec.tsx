@@ -1,26 +1,27 @@
 // src/components/Riddle.test.tsx
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/vitest';
-import userEvent from '@testing-library/user-event';
-import React from 'react';
-import RiddleComponent from './Riddle';
-import type { Riddle } from '../App.types';
+
+import { fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
+import userEvent from "@testing-library/user-event";
+import type React from "react";
+import type { Riddle } from "../App.types";
+import RiddleComponent from "./Riddle";
 
 // ---------------------------------------------------------------------------
 // Module mocks — isolate from hook implementations
 // ---------------------------------------------------------------------------
 
-vi.mock('../hooks/useShake', () => ({
+vi.mock("../hooks/useShake", () => ({
   default: vi.fn(),
 }));
 
-vi.mock('../hooks/useRiddleGuess', () => ({
+vi.mock("../hooks/useRiddleGuess", () => ({
   default: vi.fn(),
 }));
 
-import useShake from '../hooks/useShake';
-import useRiddleGuess from '../hooks/useRiddleGuess';
+import useRiddleGuess from "../hooks/useRiddleGuess";
+import useShake from "../hooks/useShake";
 
 const mockUseShake = vi.mocked(useShake);
 const mockUseRiddleGuess = vi.mocked(useRiddleGuess);
@@ -36,17 +37,19 @@ const defaultShake = {
 };
 
 const defaultRiddleGuess = {
-  guess: '',
-  response: '',
-  guessResult: null as 'correct' | 'incorrect' | null,
+  guess: "",
+  response: "",
+  guessResult: null as "correct" | "incorrect" | null,
   changeHandler: vi.fn(),
-  submitHandler: vi.fn((e: React.SubmitEvent<HTMLFormElement>) => e.preventDefault()),
+  submitHandler: vi.fn((e: React.SubmitEvent<HTMLFormElement>) =>
+    e.preventDefault(),
+  ),
 };
 
 beforeEach(() => {
   mockUseShake.mockReturnValue(defaultShake);
   mockUseRiddleGuess.mockReturnValue(defaultRiddleGuess);
-  vi.spyOn(console, 'error').mockImplementation(() => { });
+  vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
@@ -60,16 +63,16 @@ afterEach(() => {
 
 // pw is Base64 of "secret"
 const lockedRiddle: Riddle = {
-  id: 'Step 1',
-  pw: btoa('secret'),
-  riddle: 'What has keys but no locks?',
-  description: 'A keyboard',
+  id: "Step 1",
+  pw: btoa("secret"),
+  riddle: "What has keys but no locks?",
+  description: "A keyboard",
   unlocked: false,
 };
 
 const unlockedRiddle: Riddle = { ...lockedRiddle, unlocked: true };
 
-function renderRiddle(riddle: Riddle = lockedRiddle, id = 'riddle-0') {
+function renderRiddle(riddle: Riddle = lockedRiddle, id = "riddle-0") {
   return render(<RiddleComponent id={id} riddle={riddle} />);
 }
 
@@ -77,30 +80,30 @@ function renderRiddle(riddle: Riddle = lockedRiddle, id = 'riddle-0') {
 // Rendering — locked state
 // ---------------------------------------------------------------------------
 
-describe('locked riddle', () => {
-  it('renders the riddle id in the summary', () => {
+describe("locked riddle", () => {
+  it("renders the riddle id in the summary", () => {
     renderRiddle();
-    expect(screen.getByText('Step 1')).toBeInTheDocument();
+    expect(screen.getByText("Step 1")).toBeInTheDocument();
   });
 
-  it('renders the riddle question', () => {
+  it("renders the riddle question", () => {
     renderRiddle();
-    expect(screen.getByText('What has keys but no locks?')).toBeInTheDocument();
+    expect(screen.getByText("What has keys but no locks?")).toBeInTheDocument();
   });
 
-  it('renders an enabled input', () => {
+  it("renders an enabled input", () => {
     renderRiddle();
-    expect(screen.getByRole('textbox')).not.toBeDisabled();
+    expect(screen.getByRole("textbox")).not.toBeDisabled();
   });
 
-  it('does not render the clue', () => {
+  it("does not render the clue", () => {
     renderRiddle();
-    expect(screen.queryByText('A keyboard')).not.toBeInTheDocument();
+    expect(screen.queryByText("A keyboard")).not.toBeInTheDocument();
   });
 
-  it('does not show a response message when response is empty', () => {
+  it("does not show a response message when response is empty", () => {
     renderRiddle();
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 });
 
@@ -108,25 +111,25 @@ describe('locked riddle', () => {
 // Rendering — unlocked state
 // ---------------------------------------------------------------------------
 
-describe('unlocked riddle', () => {
-  it('renders the decoded answer in the input prefixed with ✔', () => {
+describe("unlocked riddle", () => {
+  it("renders the decoded answer in the input prefixed with ✔", () => {
     renderRiddle(unlockedRiddle);
-    expect(screen.getByRole('textbox')).toHaveValue('✔ secret');
+    expect(screen.getByRole("textbox")).toHaveValue("✔ secret");
   });
 
-  it('renders the clue', () => {
+  it("renders the clue", () => {
     renderRiddle(unlockedRiddle);
-    expect(screen.getByText('A keyboard')).toBeInTheDocument();
+    expect(screen.getByText("A keyboard")).toBeInTheDocument();
   });
 
-  it('renders a disabled input', () => {
+  it("renders a disabled input", () => {
     renderRiddle(unlockedRiddle);
-    expect(screen.getByRole('textbox')).toBeDisabled();
+    expect(screen.getByRole("textbox")).toBeDisabled();
   });
 
-  it('renders the details element as open', () => {
+  it("renders the details element as open", () => {
     renderRiddle(unlockedRiddle);
-    expect(screen.getByRole('group')).toHaveAttribute('open');
+    expect(screen.getByRole("group")).toHaveAttribute("open");
   });
 });
 
@@ -134,35 +137,35 @@ describe('unlocked riddle', () => {
 // Response messages
 // ---------------------------------------------------------------------------
 
-describe('response display', () => {
-  it('renders the response text when present', () => {
+describe("response display", () => {
+  it("renders the response text when present", () => {
     mockUseRiddleGuess.mockReturnValue({
       ...defaultRiddleGuess,
-      response: 'Access Denied.',
-      guessResult: 'incorrect',
+      response: "Access Denied.",
+      guessResult: "incorrect",
     });
     renderRiddle();
-    expect(screen.getByText('Access Denied.')).toBeInTheDocument();
+    expect(screen.getByText("Access Denied.")).toBeInTheDocument();
   });
 
-  it('applies the fail class for an incorrect guess', () => {
+  it("applies the fail class for an incorrect guess", () => {
     mockUseRiddleGuess.mockReturnValue({
       ...defaultRiddleGuess,
-      response: 'Access Denied.',
-      guessResult: 'incorrect',
+      response: "Access Denied.",
+      guessResult: "incorrect",
     });
     renderRiddle();
-    expect(screen.getByText('Access Denied.')).toHaveClass('fail');
+    expect(screen.getByText("Access Denied.")).toHaveClass("fail");
   });
 
-  it('does not apply the fail class for a correct guess', () => {
+  it("does not apply the fail class for a correct guess", () => {
     mockUseRiddleGuess.mockReturnValue({
       ...defaultRiddleGuess,
-      response: 'Access Granted.',
-      guessResult: 'correct',
+      response: "Access Granted.",
+      guessResult: "correct",
     });
     renderRiddle();
-    expect(screen.getByText('Access Granted.')).not.toHaveClass('fail');
+    expect(screen.getByText("Access Granted.")).not.toHaveClass("fail");
   });
 });
 
@@ -170,18 +173,18 @@ describe('response display', () => {
 // Shake CSS class
 // ---------------------------------------------------------------------------
 
-describe('shake state', () => {
-  it('applies the shake class to the form when isShaking is true', () => {
+describe("shake state", () => {
+  it("applies the shake class to the form when isShaking is true", () => {
     mockUseShake.mockReturnValue({ ...defaultShake, isShaking: true });
     renderRiddle();
     // The form has aria-label containing the riddle id
-    const form = screen.getByRole('form');
-    expect(form).toHaveClass('shake');
+    const form = screen.getByRole("form");
+    expect(form).toHaveClass("shake");
   });
 
-  it('does not apply the shake class when isShaking is false', () => {
+  it("does not apply the shake class when isShaking is false", () => {
     renderRiddle();
-    expect(screen.getByRole('form')).not.toHaveClass('shake');
+    expect(screen.getByRole("form")).not.toHaveClass("shake");
   });
 });
 
@@ -189,7 +192,7 @@ describe('shake state', () => {
 // Toggle behaviour
 // ---------------------------------------------------------------------------
 
-describe('details toggle', () => {
+describe("details toggle", () => {
   it("focuses the input when the details element is toggled open", () => {
     // 2. Setup mock riddle data
     const mockRiddle = {
@@ -203,7 +206,9 @@ describe('details toggle', () => {
     };
 
     // 3. Render the component
-    const { container } = render(<RiddleComponent id="test-1" riddle={mockRiddle} />);
+    const { container } = render(
+      <RiddleComponent id="test-1" riddle={mockRiddle} />,
+    );
 
     // 4. Query our elements
     const input = screen.getByPlaceholderText("Enter password...");
@@ -225,19 +230,22 @@ describe('details toggle', () => {
     expect(input).toHaveFocus();
   });
 
-  it('forwards changeHandler to the input', async () => {
+  it("forwards changeHandler to the input", async () => {
     const user = userEvent.setup();
     const changeHandler = vi.fn();
-    mockUseRiddleGuess.mockReturnValue({ ...defaultRiddleGuess, changeHandler });
+    mockUseRiddleGuess.mockReturnValue({
+      ...defaultRiddleGuess,
+      changeHandler,
+    });
 
     const { unmount } = renderRiddle(lockedRiddle);
 
     // Open the details first
-    const details = screen.getByRole('group');
-    details.dispatchEvent(new Event('toggle'));
+    const details = screen.getByRole("group");
+    details.dispatchEvent(new Event("toggle"));
 
-    const input = screen.getAllByRole('textbox')[0];
-    await user.type(input, 'hello');
+    const input = screen.getAllByRole("textbox")[0];
+    await user.type(input, "hello");
 
     expect(changeHandler).toHaveBeenCalledTimes(5);
     unmount();

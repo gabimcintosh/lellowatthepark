@@ -1,7 +1,7 @@
 import React from "react";
 import type { Riddle } from "../App.types";
-import useShake from "../hooks/useShake";
 import useRiddleGuess from "../hooks/useRiddleGuess";
+import useShake from "../hooks/useShake";
 
 type RiddleProps = {
   id: string;
@@ -13,12 +13,13 @@ function Riddle({ id, riddle }: RiddleProps) {
   // Answers are Base64-encoded for light obfuscation only, not security.
   const decodedAnswer = atob(riddle.pw);
   const { isShaking, shake, clearShake } = useShake();
-  const { guess, response, guessResult, changeHandler, submitHandler } = useRiddleGuess({
-    riddle,
-    decodedAnswer,
-    shake,
-    clearShake,
-  });
+  const { guess, response, guessResult, changeHandler, submitHandler } =
+    useRiddleGuess({
+      riddle,
+      decodedAnswer,
+      shake,
+      clearShake,
+    });
 
   const inputVal = riddle.unlocked ? `✔ ${decodedAnswer}` : guess;
   const failClass = guessResult === "incorrect" ? "fail" : "";
@@ -47,7 +48,11 @@ function Riddle({ id, riddle }: RiddleProps) {
             onChange={changeHandler}
             disabled={riddle.unlocked}
           />
-          {response && <p aria-live="polite" className={`response ${failClass}`}>{response}</p>}
+          {response && (
+            <p aria-live="polite" className={`response ${failClass}`}>
+              {response}
+            </p>
+          )}
           {riddle.unlocked && <p className="clue">{riddle.description}</p>}
         </form>
       </details>
