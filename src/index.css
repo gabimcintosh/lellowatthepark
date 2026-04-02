@@ -37,7 +37,6 @@ select {
   background-color: var(--black);
   border: 1px solid var(--green);
   color: var(--green);
-  padding: 0.75rem;
   font-family: inherit;
   font-weight: inherit;
   font-size: 16px;
