@@ -4,7 +4,6 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 import type { Program } from "../App.types";
 import type { ProgramDataContext as ProgramDataContextType } from "../contexts/ProgramDataContext";
 import { ProgramDataContext } from "../contexts/ProgramDataContext";
