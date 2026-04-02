@@ -1,11 +1,11 @@
 import React from "react";
-import type { Riddle } from "../App.types";
+import type { Riddle as RiddleType } from "../App.types";
 import useRiddleGuess from "../hooks/useRiddleGuess";
 import useShake from "../hooks/useShake";
 
 type RiddleProps = {
   id: string;
-  riddle: Riddle;
+  riddle: RiddleType;
 };
 
 function Riddle({ id, riddle }: RiddleProps) {

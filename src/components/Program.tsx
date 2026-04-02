@@ -1,11 +1,11 @@
 import { useMemo } from "react";
-import type { Program } from "../App.types";
+import type { Program as ProgramType } from "../App.types";
 import useProgressionScroll from "../hooks/useProgressionScroll";
 import getRiddlesToRender from "../utils/getRiddlesToRender";
 import Riddle from "./Riddle";
 
 type ProgramProps = {
-  program: Program;
+  program: ProgramType;
   resetProgram: () => void;
 };
 
