@@ -273,6 +273,7 @@ describe("selectProgram", () => {
     );
 
     const lastCall = mockSavePrograms.mock.calls.at(-1)?.[0];
+    if (!lastCall) throw new Error("lasCall was not defined");
     expect(lastCall.find((p) => p.name === "Beta")?.active).toBe(true);
     expect(lastCall.find((p) => p.name === "Alpha")?.active).toBe(false);
   });
