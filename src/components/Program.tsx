@@ -28,7 +28,7 @@ function Program({ program, resetProgram }: ProgramProps) {
       {isTheEnd && (
         <div id="classic-ending">
           <h2>The End</h2>
-          <button id="reset-selection" onClick={resetProgram}>
+          <button type="button" id="reset-selection" onClick={resetProgram}>
             Play Again?
           </button>
         </div>

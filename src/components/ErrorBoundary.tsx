@@ -44,7 +44,9 @@ class ErrorBoundary extends React.Component<
       return (
         <div className="error-screen">
           <p>A critical error occurred.</p>
-          <button onClick={this.reset}>Retry</button>
+          <button type="button" onClick={this.reset}>
+            Retry
+          </button>
         </div>
       );
     }
