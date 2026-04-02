@@ -1,19 +1,11 @@
-// src/hooks/useProgramData.test.tsx
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { useProgramData } from './useProgramData';
-import { ProgramDataContext } from '../contexts/ProgramDataContext';
-
-const contextValue: ProgramDataContext = {
-    programs: [],
-    activeProgram: undefined,
-    selectProgram: () => { },
-    updateActiveProgram: () => { },
-};
-
-
+import { createProgramDataWrapper } from '../../tests/createProgramDataWrapper';
 
 describe('useProgramData', () => {
+    const { wrapper, contextValue } = createProgramDataWrapper();
+
     it('throws when used outside of a ProgramDataContext.Provider', () => {
         expect(() => renderHook(() => useProgramData())).toThrow(
             'useProgramData must be used within a ProgramDataContext.Provider'

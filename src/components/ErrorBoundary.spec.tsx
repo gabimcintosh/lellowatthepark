@@ -1,5 +1,6 @@
 // src/components/ErrorBoundary.test.tsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
@@ -107,24 +108,6 @@ describe('when a child throws and a fallback prop is provided', () => {
 describe('reset via Retry button', () => {
   it('clears the error state and re-renders children when the child no longer throws', async () => {
     const user = userEvent.setup();
-
-    // We control throwing via React state in the wrapper
-    function Wrapper() {
-      const [boom, setBoom] = React.useState(true);
-      return (
-        <ErrorBoundary>
-          {boom
-            ? <Bomb shouldThrow />
-            // Once reset is clicked the boundary re-renders — stop throwing
-            : <p>Recovered</p>
-          }
-          {/* Provide a way to stop the bomb after reset */}
-          <button onClick={() => setBoom(false)} style={{ display: 'none' }}>
-            Stop bomb
-          </button>
-        </ErrorBoundary>
-      );
-    }
 
     // A simpler, more deterministic approach: render a controlled version
     // where we can flip shouldThrow before clicking Retry

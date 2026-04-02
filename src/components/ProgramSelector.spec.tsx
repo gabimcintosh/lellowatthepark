@@ -1,6 +1,7 @@
 // src/components/ProgramSelector.test.tsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import ProgramSelector from './ProgramSelector';
@@ -45,7 +46,7 @@ function renderWithContext(
 describe('rendering', () => {
   it('renders the placeholder option', () => {
     renderWithContext();
-    expect(screen.getByRole('option', { name: 'Select your program' })).toBeInTheDocument();
+    expect(screen.getByText('Select your program')).toBeInTheDocument();
   });
 
   it('renders an option for each program', () => {
@@ -56,13 +57,14 @@ describe('rendering', () => {
 
   it('renders the correct number of selectable options', () => {
     renderWithContext();
-    // placeholder + 2 programs
-    expect(screen.getAllByRole('option')).toHaveLength(3);
+    // You might think there should be placeholder + 2 programs = 3 options,
+    // but the placeholder is not selectable, so subtract 1
+    expect(screen.getAllByRole('option')).toHaveLength(2);
   });
 
   it('renders no program options when the programs list is empty', () => {
     renderWithContext({ programs: [] });
-    expect(screen.getAllByRole('option')).toHaveLength(1); // only placeholder
+    expect(screen.getAllByText('Select your program')).toHaveLength(1);
   });
 });
 

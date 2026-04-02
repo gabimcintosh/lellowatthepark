@@ -1,6 +1,7 @@
 // src/components/Riddle.test.tsx
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import RiddleComponent from './Riddle';
@@ -39,7 +40,7 @@ const defaultRiddleGuess = {
   response: '',
   guessResult: null as 'correct' | 'incorrect' | null,
   changeHandler: vi.fn(),
-  submitHandler: vi.fn((e: Event) => e.preventDefault()),
+  submitHandler: vi.fn((e: React.SubmitEvent<HTMLFormElement>) => e.preventDefault()),
 };
 
 beforeEach(() => {
@@ -189,28 +190,56 @@ describe('shake state', () => {
 // ---------------------------------------------------------------------------
 
 describe('details toggle', () => {
+  it("focuses the input when the details element is toggled open", () => {
+    // 2. Setup mock riddle data
+    const mockRiddle = {
+      id: "riddle-1",
+      riddle: "I speak without a mouth and hear without ears. What am I?",
+      // Base64 for "echo" - prevents atob() from throwing an error
+      pw: "ZWNobw==",
+      // CRITICAL: unlocked must be false, otherwise the input is disabled and cannot receive focus
+      unlocked: false,
+      description: "Sound reflects.",
+    };
+
+    // 3. Render the component
+    const { container } = render(<RiddleComponent id="test-1" riddle={mockRiddle} />);
+
+    // 4. Query our elements
+    const input = screen.getByPlaceholderText("Enter password...");
+    const details = container.querySelector("details");
+
+    expect(details).not.toBeNull();
+    expect(input).not.toHaveFocus(); // Ensure it isn't focused initially
+
+    // 5. Construct the ToggleEvent
+    // We use defineProperty to bypass strict TypeScript/virtual DOM limitations
+    // regarding the relatively new ToggleEvent 'newState' property.
+    const toggleEvent = new Event("toggle");
+    Object.defineProperty(toggleEvent, "newState", { value: "open" });
+
+    // 6. Fire the event
+    fireEvent(details!, toggleEvent);
+
+    // 7. Assert Line 28 executed successfully
+    expect(input).toHaveFocus();
+  });
+
   it('forwards changeHandler to the input', async () => {
     const user = userEvent.setup();
     const changeHandler = vi.fn();
     mockUseRiddleGuess.mockReturnValue({ ...defaultRiddleGuess, changeHandler });
 
-    // Render with open details so the input is visible
-    renderRiddle({ ...lockedRiddle, unlocked: true });
-
-    // Input is disabled when unlocked; use locked riddle rendered inside open details
-    // Render locked riddle with open details via a custom unlock state
-    const { unmount } = render(
-      <RiddleComponent id="r" riddle={{ ...lockedRiddle }} />
-    );
+    const { unmount } = renderRiddle(lockedRiddle);
 
     // Open the details first
-    const details = document.querySelector('details:not([open])') as HTMLDetailsElement;
-    fireEvent.toggle(details, { newState: 'open' });
+    const details = screen.getByRole('group');
+    details.dispatchEvent(new Event('toggle'));
 
     const input = screen.getAllByRole('textbox')[0];
     await user.type(input, 'hello');
 
-    expect(changeHandler).toHaveBeenCalled();
+    expect(changeHandler).toHaveBeenCalledTimes(5);
     unmount();
   });
 });

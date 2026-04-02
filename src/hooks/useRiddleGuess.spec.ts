@@ -44,13 +44,13 @@ const shake = vi.fn();
 const clearShake = vi.fn();
 
 function renderGuessHook(overrides: Partial<ContextType> = {}) {
-    const { Wrapper, contextValue } = createProgramDataWrapper({
+    const { wrapper, contextValue } = createProgramDataWrapper({
         activeProgram,
         ...overrides,
     });
     const { result } = renderHook(
         () => useRiddleGuess({ riddle, decodedAnswer: 'secret', shake, clearShake }),
-        { wrapper: Wrapper }
+        { wrapper }
     );
     return { result, contextValue };
 }

@@ -15,7 +15,7 @@ export function createProgramDataWrapper(overrides: Partial<ProgramDataContext> 
     ...overrides,
   };
 
-  function Wrapper({ children }: { children: React.ReactNode }) {
+  function wrapper({ children }: { children: React.ReactNode }) {
     return (
       <ProgramDataContext.Provider value={contextValue}>
         {children}
@@ -23,5 +23,5 @@ export function createProgramDataWrapper(overrides: Partial<ProgramDataContext> 
     );
   }
 
-  return { Wrapper, contextValue };
+  return { wrapper, contextValue };
 }

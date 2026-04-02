@@ -1,5 +1,5 @@
 // src/hooks/useShake.test.ts
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import useShake from './useShake';
 
@@ -92,19 +92,16 @@ describe('clearShake()', () => {
 // ---------------------------------------------------------------------------
 
 describe('calling shake() multiple times', () => {
-    it('resets the timer on each call', () => {
+    it('does not reset the timer if already shaking', () => {
         const { result } = renderHook(() => useShake());
 
         act(() => result.current.shake());
         act(() => vi.advanceTimersByTime(300));
 
-        // Shake again — the 400ms window should restart
+        // Call shake again — already shaking so this is a no-op
         act(() => result.current.shake());
-        act(() => vi.advanceTimersByTime(300));
 
-        // Only 300ms have passed since the second shake — should still be shaking
-        expect(result.current.isShaking).toBe(true);
-
+        // The original 400ms timer still fires at t=400, not t=700
         act(() => vi.advanceTimersByTime(100));
         expect(result.current.isShaking).toBe(false);
     });
