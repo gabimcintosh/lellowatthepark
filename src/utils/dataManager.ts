@@ -58,7 +58,7 @@ export const encodeObjectToString = (programs: Program[]): string => {
 export const decodeStringToObject = (encodedString: string): Program[] => {
   const byteArray = encodedString
     .split(" ")
-    .map((byte) => Number.parseInt(byte));
+    .map((byte) => Number.parseInt(byte, 10));
   const uInt8Array = Uint8Array.from(byteArray);
   const decodedObject = decode(uInt8Array) as Program[];
 

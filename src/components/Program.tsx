@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import type { Program } from "../App.types";
 import useProgressionScroll from "../hooks/useProgressionScroll";
 import getRiddlesToRender from "../utils/getRiddlesToRender";

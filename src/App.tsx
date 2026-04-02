@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Program from "./components/Program";
 import ProgramSelector from "./components/ProgramSelector";
 import { ProgramDataContext } from "./contexts/ProgramDataContext";

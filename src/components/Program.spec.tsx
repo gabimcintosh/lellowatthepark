@@ -4,7 +4,6 @@ import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 import type { Program as ProgramType } from "../App.types";
 import Program from "./Program";
 
