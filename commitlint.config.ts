@@ -1,4 +1,6 @@
-module.exports = {
+import type { UserConfig } from "@commitlint/types";
+
+const config: UserConfig = {
   extends: ["@commitlint/config-conventional"],
   parserPreset: {
     parserOpts: {
@@ -32,7 +34,7 @@ module.exports = {
   plugins: [
     {
       rules: {
-        "gitmoji-required": (parsed) => {
+        "gitmoji-required": (parsed: any) => {
           if (!parsed.header) return [false, "Commit header is required"];
 
           const gitmojiMatch = parsed.header.match(/^:([^:]+):/);
@@ -67,7 +69,7 @@ module.exports = {
 
           return [true];
         },
-        "gitmoji-type-mapping": (parsed) => {
+        "gitmoji-type-mapping": (parsed: any) => {
           if (!parsed.header) return [false, "Commit header is required"];
 
           const gitmojiMatch = parsed.header.match(/^:([^:]+):\s+(\w+)/);
@@ -76,7 +78,7 @@ module.exports = {
           const gitmoji = gitmojiMatch[1];
           const type = gitmojiMatch[2];
 
-          const gitmojiTypeMap = {
+          const gitmojiTypeMap: Record<string, string> = {
             sparkles: "feat",
             bug: "fix",
             docs: "docs",
@@ -108,3 +110,5 @@ module.exports = {
     "gitmoji-type-mapping": 2,
   },
 };
+
+export default config;
