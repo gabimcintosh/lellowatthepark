@@ -1,12 +1,25 @@
-import type { UserConfig } from 'vite'
+import react from "@vitejs/plugin-react";
+import { configDefaults, defineConfig } from "vitest/config";
 
-export default {
-    appType: 'spa',
-    base: './',
-    server: {
-        open: '/index.html'
+export default defineConfig({
+  server: {
+    open: "index.html",
+  },
+  plugins: [react()],
+  test: {
+    environment: "happy-dom",
+    setupFiles: "./tests/setupTests.ts",
+    clearMocks: true,
+    restoreMocks: true,
+    coverage: {
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/index.tsx",
+        "src/App.tsx",
+        ...configDefaults.exclude,
+        "**/*.types.ts",
+        "**/*.d.ts",
+      ],
     },
-    build: {
-        target: 'esnext',
-    },
-} satisfies UserConfig;
+  },
+});

@@ -1,1 +1,1 @@
-declare module 'gulp-json-schema';
+declare module "gulp-json-schema";

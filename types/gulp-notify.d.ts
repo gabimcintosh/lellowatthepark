@@ -1,1 +1,1 @@
-declare module 'gulp-notify';
+declare module "gulp-notify";

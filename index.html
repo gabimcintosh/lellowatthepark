@@ -1,39 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Lellow at the Park</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/style.css" />
-    <script src="src/script.js" type="module"></script>
+    <script src="src/index.tsx" type="module"></script>
   </head>
 
   <body>
-    <div id="program-selection" class="dn container">
-      <select id="program-select">
-        <option value="" selected disabled>Select your program</option>
-      </select>
-    </div>
-    <div id="terminal" class="dn container">
-      <h1 id="program-title" class="title"></h1>
-      <div id="programs"></div>
-      <div id="classic-ending" class="dn">
-        <h2>The End</h2>
-        <button id="reset-selection">Play Again?</button>
-      </div>
-    </div>
-    <template id="program-tmpl">
-      <div class="program">
-        <details>
-          <summary></summary>
-          <div class="riddle">
-            <p></p>
-            <input type="text" placeholder="Enter password..." />
-            <p class="response"></p>
-            <p class="description"></p>
-          </div>
-        </details>
-      </div>
-    </template>
+    <div id="app-root"></div>
   </body>
 </html>

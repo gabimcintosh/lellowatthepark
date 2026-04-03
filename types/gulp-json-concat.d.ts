@@ -1,1 +1,1 @@
-declare module 'gulp-json-concat';
+declare module "gulp-json-concat";
