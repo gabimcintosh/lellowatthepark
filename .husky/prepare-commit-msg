@@ -1,0 +1,2 @@
+exec < /dev/tty
+yarn commitizen --hook || true
