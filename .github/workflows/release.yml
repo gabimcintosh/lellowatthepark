@@ -27,37 +27,34 @@ jobs:
           cache-dependency-path: yarn.lock
           # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
           node-version: 22.x
-      - name: Install dependencies
-        run: yarn
-      - name: Run build
-        run: yarn build
-      - name: Upload data for release job
+      - name: Install & Build
+        run: |
+          yarn
+          yarn build
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: release_contents
-          path: |
-            dist
+          path: dist
 
   # Create GitHub Release
   release:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Download artifacts from build
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           name: release_contents
           path: dist
-      - name: Creates a release in GitHub and uploads attachments
-        run: |
-          ls -la
-          RELEASE_VERSION="$(npm pkg get version | tr -d '"')"
-          RELEASE_FILENAME="v${RELEASE_VERSION}.zip"
-          cd dist
-          zip -r "${RELEASE_FILENAME}" ./*
-          gh release create "v${RELEASE_VERSION}" "${RELEASE_FILENAME}"
+      - name: Generate Tag Name
+        id: tagger
+        run: echo "tag=v$(date +'%Y.%m.%d-%H%M')" >> $GITHUB_OUTPUT
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tagger.outputs.tag }}
+          files: dist/**
+          generate_release_notes: true # This will include your Gitmojis automatically!
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
