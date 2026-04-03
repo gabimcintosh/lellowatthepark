@@ -30,6 +30,10 @@ The data which drives the programs is found within the `programs` directory. Her
 
 The main file for executing the program is `src/index.tsx`, which will perform the imports needed to render the project.
 
+#### IDE
+
+This project was made with VS Code in mind. Thus, as you load the project in VS Code, you will see recommendation appear for the various extensions that this project was built with. Do not feel obligated to install them. The tools will still work, just not as integrated into the IDE. Instead, the tools will be accessible via the terminal
+
 ## Build
 
 Running the build is as simple as `yarn build`. This will:
