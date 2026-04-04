@@ -25,7 +25,7 @@
       }
     ],
     [
-      "semantic-release-calver",
+      "@mrbernnz/semantic-release-calver",
       {
         "tagFormat": "v${version}",
         "format": "YYYY.MM.DD"
