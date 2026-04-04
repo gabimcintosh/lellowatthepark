@@ -1,63 +1,83 @@
-name: Github Release
+name: Release
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: release
+  cancel-in-progress: true
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
       - name: Enable yarn berry
         run: corepack enable
+
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
           cache: yarn
-          # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
           cache-dependency-path: yarn.lock
-          # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-          node-version: 22.x
+          node-version-file: .tool-versions
+
       - name: Install dependencies
-        run: yarn
+        run: yarn install --immutable
+
       - name: Run build
         run: yarn build
-      - name: Upload data for release job
-        uses: actions/upload-artifact@v4
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
         with:
           name: release_contents
-          path: |
-            dist
+          path: dist
 
-  # Create GitHub Release
   release:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      contents: write   # To push the version bump commit and tags
-      issues: write     # To comment on fixed issues
-      pull-requests: write # To comment on merged PRs
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # IMPORTANT: Semantic-release needs full history
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: release_contents
           path: dist
-      - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
+
+      - name: Enable yarn berry
+        run: corepack enable
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6
         with:
-          extra_plugins: |
-            semantic-release-gitmoji
-            @semantic-release/git
-            @semantic-release/npm
+          cache: yarn
+          cache-dependency-path: yarn.lock
+          node-version-file: .tool-versions
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Release (or dry-run on PR)
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            yarn semantic-release --dry-run
+          else
+            yarn semantic-release
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
