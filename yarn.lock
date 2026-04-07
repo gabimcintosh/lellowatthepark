@@ -2918,7 +2918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-angular@npm:*, conventional-changelog-angular@npm:^8.0.0, conventional-changelog-angular@npm:^8.2.0, conventional-changelog-angular@npm:^8.3.1":
+"conventional-changelog-angular@npm:^8.0.0, conventional-changelog-angular@npm:^8.2.0, conventional-changelog-angular@npm:^8.3.1":
   version: 8.3.1
   resolution: "conventional-changelog-angular@npm:8.3.1"
   dependencies:
@@ -5506,10 +5506,6 @@ __metadata:
     vitest: "npm:^4.1.2"
   dependenciesMeta:
     "@biomejs/biome@2.4.10":
-      unplugged: true
-    "@semantic-release/commit-analyzer":
-      unplugged: true
-    conventional-changelog-angular:
       unplugged: true
   languageName: unknown
   linkType: soft

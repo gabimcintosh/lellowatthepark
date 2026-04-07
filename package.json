@@ -82,12 +82,6 @@
   "dependenciesMeta": {
     "@biomejs/biome@2.4.10": {
       "unplugged": true
-    },
-    "@semantic-release/commit-analyzer": {
-      "unplugged": true
-    },
-    "conventional-changelog-angular": {
-      "unplugged": true
     }
   }
 }
