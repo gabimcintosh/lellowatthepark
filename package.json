@@ -46,7 +46,10 @@
     "@vitest/ui": "4.1.2",
     "commitizen": "^4.3.1",
     "commitlint-config-gitmoji": "^2.3.1",
+    "conventional-changelog-angular": "^8.3.1",
+    "conventional-changelog-conventionalcommits": "^9.3.1",
     "cz-emoji-conventional": "^1.2.1",
+    "date-fns": "^2.30.0",
     "del": "^8.0.1",
     "gulp": "^5.0.1",
     "gulp-cli": "^3.1.0",
@@ -78,6 +81,12 @@
   "packageManager": "yarn@4.13.0",
   "dependenciesMeta": {
     "@biomejs/biome@2.4.10": {
+      "unplugged": true
+    },
+    "@semantic-release/commit-analyzer": {
+      "unplugged": true
+    },
+    "conventional-changelog-angular": {
       "unplugged": true
     }
   }
