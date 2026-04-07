@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - name: Enable yarn berry
         run: corepack enable
@@ -70,7 +72,13 @@ jobs:
           node-version-file: .tool-versions
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: |
+          # Force node_modules just for this run to avoid PnP issues
+          yarn config set nodeLinker node-modules
+          yarn install --immutable
+        env:
+          # This ensures the date-fns version you need is respected
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Release (or dry-run on PR)
         run: |
