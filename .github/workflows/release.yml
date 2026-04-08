@@ -78,9 +78,9 @@ jobs:
         run: |
           # Force node_modules just for this run to avoid PnP issues
           yarn config set nodeLinker node-modules
-          yarn install --immutable
+          yarn install
         env:
-          # This ensures the date-fns version you need is respected
+          # This ensures the date-fns version is respected
           YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
       - name: Release (or dry-run on PR)

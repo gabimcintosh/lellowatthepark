@@ -1,10 +1,10 @@
 {
   "branches": ["main"],
+  "tagFormat": "v${version}",
   "plugins": [
     [
       "@mrbernnz/semantic-release-calver",
       {
-        "tagFormat": "v${version}",
         "format": "YYYY.MM.DD"
       }
     ],
