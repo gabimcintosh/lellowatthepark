@@ -55,6 +55,9 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Fetch tags manually
+        run: git fetch --force --tags
+
       - name: Download artifacts
         uses: actions/download-artifact@v7
         with:
