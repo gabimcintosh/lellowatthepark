@@ -20,6 +20,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@commitlint/cli": "^20.5.2",
+    "@commitlint/types": "^20.5.0",
     "@mrbernnz/semantic-release-calver": "^0.3.1",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/error": "^4.0.0",
