@@ -31,11 +31,14 @@ function Riddle({ id, riddle }: RiddleProps) {
   }
 
   return (
-    <div id={id} className="riddle">
+    <div
+      id={id}
+      className={isShaking ? "riddle shake" : "riddle"}
+      data-testid={id}
+    >
       <details onToggle={toggleHandler} open={riddle.unlocked}>
         <summary>{riddle.id}</summary>
         <form
-          className={isShaking ? "shake" : ""}
           onSubmit={submitHandler}
           aria-label={`${riddle.id} - enter password and press Enter to submit`}
         >
