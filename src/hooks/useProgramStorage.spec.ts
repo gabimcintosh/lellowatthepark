@@ -422,3 +422,52 @@ describe("resetProgram", () => {
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// clearActiveProgram
+// ---------------------------------------------------------------------------
+
+describe("clearActiveProgram", () => {
+  it("sets active to false for all programs", async () => {
+    const { result } = renderHook(() => useProgramStorage());
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => result.current.clearActiveProgram());
+
+    expect(result.current.programs.every((p) => p.active === false)).toBe(true);
+  });
+
+  it("updates activeProgram to be undefined", async () => {
+    const { result } = renderHook(() => useProgramStorage());
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    act(() => result.current.clearActiveProgram());
+
+    expect(result.current.activeProgram).toBeUndefined();
+  });
+
+  it("is a no-op if no program is currently active", async () => {
+    const allInactive = programs.map((p) => ({ ...p, active: false }));
+    mockLoadPrograms.mockResolvedValue(allInactive);
+
+    const { result } = renderHook(() => useProgramStorage());
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    const before = result.current.programs;
+    act(() => result.current.clearActiveProgram());
+
+    expect(result.current.programs).toEqual(before);
+  });
+
+  it("triggers a savePrograms call", async () => {
+    const { result } = renderHook(() => useProgramStorage());
+    await waitFor(() => expect(result.current.isLoading).toBe(false));
+
+    const callsBefore = mockSavePrograms.mock.calls.length;
+    act(() => result.current.clearActiveProgram());
+
+    await waitFor(() =>
+      expect(mockSavePrograms.mock.calls.length).toBeGreaterThan(callsBefore),
+    );
+  });
+});

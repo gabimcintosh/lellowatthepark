@@ -65,6 +65,15 @@ function useProgramStorage() {
     );
   }, []);
 
+  const clearActiveProgram = useCallback(() => {
+    setPrograms((prev) =>
+      prev.map((p) => ({
+        ...p,
+        active: false,
+      })),
+    );
+  }, []);
+
   return {
     programs,
     activeProgram,
@@ -73,6 +82,7 @@ function useProgramStorage() {
     selectProgram,
     updateActiveProgram,
     resetProgram,
+    clearActiveProgram,
   };
 }
 
