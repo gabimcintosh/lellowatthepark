@@ -6,7 +6,6 @@ const config = defineConfig({
     "header-max-length": [2, "always", 100],
   },
   prompt: {
-    // Enable Gitmoji in the cz-git prompt
     useEmoji: true,
     emojiAlign: "left",
   },
