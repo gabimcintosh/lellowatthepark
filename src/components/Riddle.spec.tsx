@@ -178,8 +178,8 @@ describe("shake state", () => {
     mockUseShake.mockReturnValue({ ...defaultShake, isShaking: true });
     renderRiddle();
     // The form has aria-label containing the riddle id
-    const form = screen.getByRole("form");
-    expect(form).toHaveClass("shake");
+    const riddle = screen.getByTestId("riddle-0");
+    expect(riddle).toHaveClass("shake");
   });
 
   it("does not apply the shake class when isShaking is false", () => {
