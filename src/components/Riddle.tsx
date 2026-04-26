@@ -22,7 +22,7 @@ function Riddle({ id, riddle }: RiddleProps) {
     });
 
   const inputVal = riddle.unlocked ? `✔ ${decodedAnswer}` : guess;
-  const failClass = guessResult === "incorrect" ? "fail" : "";
+  const rspClasses = guessResult === "incorrect" ? "response fail" : "response";
 
   function toggleHandler(event: React.ToggleEvent<HTMLDetailsElement>) {
     if (event.newState === "open") {
@@ -52,7 +52,7 @@ function Riddle({ id, riddle }: RiddleProps) {
             disabled={riddle.unlocked}
           />
           {response && (
-            <p aria-live="polite" className={`response ${failClass}`}>
+            <p aria-live="polite" className={rspClasses}>
               {response}
             </p>
           )}
