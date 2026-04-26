@@ -15,7 +15,7 @@
     "preview": "vite preview",
     "commit": "git-cz",
     "lint-staged": "lint-staged",
-    "prepare": "husky install"
+    "postinstall": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
