@@ -7,9 +7,10 @@ import Riddle from "./Riddle";
 type ProgramProps = {
   program: ProgramType;
   resetProgram: () => void;
+  clearActiveProgram: () => void;
 };
 
-function Program({ program, resetProgram }: ProgramProps) {
+function Program({ program, resetProgram, clearActiveProgram }: ProgramProps) {
   const { riddlesToRender, nextRiddleIndex } = useMemo(
     () => getRiddlesToRender(program.riddles),
     [program.riddles],
@@ -18,6 +19,20 @@ function Program({ program, resetProgram }: ProgramProps) {
   useProgressionScroll(nextRiddleIndex);
 
   const isTheEnd = nextRiddleIndex === -1;
+
+  const handleSelectNewProgram = () => {
+    // Prompt the user. Returns true for "OK", false for "Cancel"
+    const shouldReset = window.confirm(
+      "Reset progress before selecting a new program?",
+    );
+
+    if (shouldReset) {
+      resetProgram();
+    }
+
+    // Always clear the active program to return to the selector
+    clearActiveProgram();
+  };
 
   return (
     <>
@@ -28,9 +43,14 @@ function Program({ program, resetProgram }: ProgramProps) {
       {isTheEnd && (
         <div id="classic-ending">
           <h2>The End</h2>
-          <button type="button" id="reset-selection" onClick={resetProgram}>
-            Play Again?
-          </button>
+          <div className="action-buttons">
+            <button type="button" onClick={resetProgram}>
+              Play program again
+            </button>
+            <button type="button" onClick={handleSelectNewProgram}>
+              Select new program
+            </button>
+          </div>
         </div>
       )}
     </>

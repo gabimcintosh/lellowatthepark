@@ -13,6 +13,7 @@ function App() {
     selectProgram,
     updateActiveProgram,
     resetProgram,
+    clearActiveProgram,
   } = useProgramStorage();
 
   const contextValue = useMemo(
@@ -37,7 +38,11 @@ function App() {
     <div className="app">
       <ProgramDataContext.Provider value={contextValue}>
         {activeProgram ? (
-          <Program program={activeProgram} resetProgram={resetProgram} />
+          <Program
+            program={activeProgram}
+            resetProgram={resetProgram}
+            clearActiveProgram={clearActiveProgram}
+          />
         ) : (
           <ProgramSelector />
         )}
