@@ -14,19 +14,19 @@ body {
   padding: 2rem;
 }
 
+button {
+  border: 1px solid var(--green);
+  background-color: var(--black);
+  cursor: pointer;
+  padding: 1rem;
+  font-size: large;
+  margin: 0 1rem;
+}
+
 #app-root {
   max-width: 800px;
   margin: auto;
   width: 100%;
-}
-
-#reset-selection {
-  color: var(--green);
-  background-color: var(--black);
-  border: 1px solid var(--green);
-  cursor: pointer;
-  padding: 1rem;
-  font-size: large;
 }
 
 select {
@@ -83,16 +83,14 @@ p {
   margin: 0.75rem 1rem;
 }
 
-.dn {
-  display: none;
-}
-
 .fail {
   color: var(--red);
 }
 
 #classic-ending {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .shake {
@@ -160,10 +158,10 @@ input[type="text"]:disabled {
 
 .error-screen button {
   color: var(--red);
-  background-color: var(--black);
-  border: 1px solid var(--red);
-  cursor: pointer;
-  padding: 1rem;
-  font-size: large;
-  margin-top: 1rem;
+  border-color: var(--red);
+}
+
+#classic-ending button {
+  color: var(--green);
+  border-color: var(--green);
 }
